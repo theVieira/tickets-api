@@ -1,0 +1,12 @@
+services:
+  ticket-database:
+    image: postgres:alpine
+    container_name: ticket-database
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    restart: always
