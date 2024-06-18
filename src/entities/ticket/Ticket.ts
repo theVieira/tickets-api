@@ -7,15 +7,17 @@ export class Ticket {
   description: string;
   status: "open" | "progress" | "finished";
   priority: "urgent" | "high" | "medium" | "low";
-  clientId: string;
-  techId?: string;
+  clientName: string;
+  techName?: string;
+  createdAt?: Date;
 
   constructor(
     props: TicketProps,
     id?: string,
     status?: "open" | "progress" | "finished",
     reccurent?: boolean,
-    techId?: string
+    techName?: string,
+    createdAt?: Date
   ) {
     if (!id) {
       this.id = uuid();
@@ -32,15 +34,18 @@ export class Ticket {
     } else {
       this.reccurrent = reccurent;
     }
-
-    this.techId = undefined;
-
-    if (techId) {
-      this.techId = techId;
+    if (!techName) {
+      this.techName = undefined;
+    }
+    if (techName) {
+      this.techName = techName;
+    }
+    if (createdAt) {
+      this.createdAt = createdAt;
     }
 
     this.description = props.description;
     this.priority = props.priority;
-    this.clientId = props.clientId;
+    this.clientName = props.clientName;
   }
 }

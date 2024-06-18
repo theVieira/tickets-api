@@ -16,9 +16,10 @@ export class SwapTechStatusUseCase {
   ): Promise<Tech> {
     const jwt = verify(token, SECRET) as IPayload;
 
-    if (jwt.admin === false) throw new Error("must be admin");
+    if (jwt.admin === false) throw new Error("ForbiddenError");
 
     const tech = await this.techRepository.swapStatus(name, status);
+
     return tech;
   }
 }

@@ -29,14 +29,14 @@ export class ClientRepository implements IClientRepository {
       const tickets = client.tickets.map((ticket) => {
         return new Ticket(
           {
-            clientId: ticket.clientId,
+            clientName: ticket.clientName,
             description: ticket.description,
             priority: ticket.priority,
           },
           ticket.id,
           ticket.status,
           ticket.reccurrent,
-          ticket.techId
+          ticket.techName || ""
         );
       });
 

@@ -1,5 +1,6 @@
 import { ITechRepository } from "../../entities/tech/ITechRepository";
 import { Tech } from "../../entities/tech/Tech";
+import { Ticket } from "../../entities/ticket/Ticket";
 import { tech_gateway } from "../../services/database/prisma";
 
 export class TechRepository implements ITechRepository {
@@ -52,7 +53,18 @@ export class TechRepository implements ITechRepository {
         },
         tech.id,
         tech.status,
-        tech.tickets
+        tech.tickets.map((ticket) => {
+          return new Ticket(
+            {
+              clientName: ticket.clientName,
+              description: ticket.description,
+              priority: ticket.priority,
+            },
+            ticket.id,
+            ticket.status,
+            ticket.reccurrent
+          );
+        })
       );
     });
 
@@ -103,7 +115,19 @@ export class TechRepository implements ITechRepository {
         },
         tech.id,
         tech.status,
-        tech.tickets
+        tech.tickets.map((ticket) => {
+          return new Ticket(
+            {
+              clientName: ticket.clientName,
+              description: ticket.description,
+              priority: ticket.priority,
+            },
+            ticket.id,
+            ticket.status,
+            ticket.reccurrent,
+            ticket.techName || ""
+          );
+        })
       );
     }
   }

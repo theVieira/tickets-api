@@ -15,7 +15,7 @@ export class Client {
       this.id = id;
     }
     if (!tickets) {
-      this.tickets = [];
+      this.tickets = undefined;
     } else {
       this.tickets = tickets;
     }

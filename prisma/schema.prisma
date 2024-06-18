@@ -15,7 +15,7 @@ datasource db {
 
 model Client {
   id          String      @unique
-  name        String
+  name        String      @unique
   tickets     Ticket[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -27,10 +27,10 @@ model Ticket {
   description String
   status      TicketStatus
   priority    TicketPriority
-  clientId    String
-  client      Client          @relation(fields: [clientId], references: [id])
-  techId      String
-  tech        Tech           @relation(fields: [techId], references: [id])
+  clientName  String
+  client      Client          @relation(fields: [clientName], references: [name])
+  techName    String? 
+  tech        Tech?           @relation(fields: [techName], references: [name])
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 }
