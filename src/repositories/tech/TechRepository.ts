@@ -2,10 +2,13 @@ import { ITechRepository } from "../../entities/tech/ITechRepository";
 import { Tech } from "../../entities/tech/Tech";
 import { Ticket } from "../../entities/ticket/Ticket";
 import { tech_gateway } from "../../services/database/prisma";
+import { MapTechStatus } from "../../services/utils/MapTechStatus";
+import { MapTicketPriority } from "../../services/utils/MapTicketPriority";
+import { MapTicketStatus } from "../../services/utils/MapTicketStatus";
 
 export class TechRepository implements ITechRepository {
   async create(tech: Tech): Promise<Tech> {
-    const aTech = await tech_gateway.create({
+    const data = await tech_gateway.create({
       data: {
         admin: tech.admin,
         color: tech.color,
@@ -16,9 +19,36 @@ export class TechRepository implements ITechRepository {
         password: tech.password,
         status: tech.status,
       },
+      include: {
+        tickets: true,
+      },
     });
 
-    return aTech;
+    return new Tech(
+      {
+        admin: data.admin,
+        color: data.color,
+        create_ticket: data.create_ticket,
+        delete_ticket: data.delete_ticket,
+        name: data.name,
+        password: data.password,
+      },
+      data.id,
+      MapTechStatus(data.status),
+      data.tickets.map((ticket) => {
+        return new Ticket(
+          {
+            clientName: ticket.clientName,
+            description: ticket.description,
+            priority: MapTicketPriority(ticket.priority),
+          },
+          ticket.id,
+          MapTicketStatus(ticket.status),
+          ticket.reccurrent,
+          ticket.techName || undefined
+        );
+      })
+    );
   }
 
   async list(): Promise<Tech[]> {
@@ -26,84 +56,12 @@ export class TechRepository implements ITechRepository {
       orderBy: {
         createdAt: "asc",
       },
-      select: {
-        admin: true,
-        color: true,
-        create_ticket: true,
-        createdAt: true,
-        delete_ticket: true,
-        id: true,
-        name: true,
-        status: true,
+      include: {
         tickets: true,
-        updatedAt: true,
-        password: false,
       },
     });
 
-    const techs = data.map((tech) => {
-      return new Tech(
-        {
-          admin: tech.admin,
-          color: tech.color,
-          create_ticket: tech.create_ticket,
-          delete_ticket: tech.delete_ticket,
-          name: tech.name,
-          password: "",
-        },
-        tech.id,
-        tech.status,
-        tech.tickets.map((ticket) => {
-          return new Ticket(
-            {
-              clientName: ticket.clientName,
-              description: ticket.description,
-              priority: ticket.priority,
-            },
-            ticket.id,
-            ticket.status,
-            ticket.reccurrent
-          );
-        })
-      );
-    });
-
-    return techs;
-  }
-
-  async swapStatus(name: string, status: "active" | "inactive"): Promise<Tech> {
-    const tech = tech_gateway.update({
-      where: {
-        name,
-      },
-      data: {
-        status,
-      },
-    });
-    return tech;
-  }
-
-  async auth(name: string): Promise<Tech> {
-    const tech = await tech_gateway.findFirst({
-      where: {
-        name,
-      },
-      select: {
-        tickets: true,
-        admin: true,
-        password: true,
-        color: true,
-        create_ticket: true,
-        delete_ticket: true,
-        id: true,
-        status: true,
-        name: true,
-      },
-    });
-
-    if (!tech) {
-      throw new Error("tech not found");
-    } else {
+    return data.map((tech) => {
       return new Tech(
         {
           admin: tech.admin,
@@ -114,21 +72,152 @@ export class TechRepository implements ITechRepository {
           password: tech.password,
         },
         tech.id,
-        tech.status,
+        MapTechStatus(tech.status),
         tech.tickets.map((ticket) => {
           return new Ticket(
             {
               clientName: ticket.clientName,
               description: ticket.description,
-              priority: ticket.priority,
+              priority: MapTicketPriority(ticket.priority),
             },
             ticket.id,
-            ticket.status,
+            MapTicketStatus(ticket.status),
             ticket.reccurrent,
-            ticket.techName || ""
+            ticket.techName || undefined
           );
         })
       );
-    }
+    });
+  }
+
+  async swapStatus(name: string, status: "active" | "inactive"): Promise<Tech> {
+    const data = await tech_gateway.update({
+      where: {
+        name,
+      },
+      data: {
+        status,
+      },
+      include: {
+        tickets: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
+      },
+    });
+
+    return new Tech(
+      {
+        admin: data.admin,
+        color: data.color,
+        create_ticket: data.create_ticket,
+        delete_ticket: data.delete_ticket,
+        name: data.name,
+        password: data.password,
+      },
+      data.id,
+      MapTechStatus(data.status),
+      data.tickets.map((ticket) => {
+        return new Ticket(
+          {
+            clientName: ticket.clientName,
+            description: ticket.description,
+            priority: MapTicketPriority(ticket.priority),
+          },
+          ticket.id,
+          MapTicketStatus(ticket.status),
+          ticket.reccurrent,
+          ticket.techName || undefined,
+          ticket.createdAt
+        );
+      })
+    );
+  }
+
+  async auth(name: string): Promise<Tech> {
+    const data = await tech_gateway.findFirst({
+      where: {
+        name,
+      },
+      include: {
+        tickets: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
+      },
+    });
+
+    if (!data) throw new Error("tech not found");
+    return new Tech(
+      {
+        admin: data.admin,
+        color: data.color,
+        create_ticket: data.create_ticket,
+        delete_ticket: data.delete_ticket,
+        name: data.name,
+        password: data.password,
+      },
+      data.id,
+      MapTechStatus(data.status),
+      data.tickets.map((ticket) => {
+        return new Ticket(
+          {
+            clientName: ticket.clientName,
+            description: ticket.description,
+            priority: MapTicketPriority(ticket.priority),
+          },
+          ticket.id,
+          MapTicketStatus(ticket.status),
+          ticket.reccurrent,
+          ticket.techName || undefined,
+          ticket.createdAt
+        );
+      })
+    );
+  }
+
+  async findByName(name: string): Promise<Tech> {
+    const data = await tech_gateway.findFirst({
+      where: {
+        name,
+      },
+      include: {
+        tickets: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
+      },
+    });
+
+    if (!data) throw new Error("tech not found");
+    return new Tech(
+      {
+        admin: data.admin,
+        color: data.color,
+        create_ticket: data.create_ticket,
+        delete_ticket: data.delete_ticket,
+        name: data.name,
+        password: data.password,
+      },
+      data.id,
+      MapTechStatus(data.status),
+      data.tickets.map((ticket) => {
+        return new Ticket(
+          {
+            clientName: ticket.clientName,
+            description: ticket.description,
+            priority: MapTicketPriority(ticket.priority),
+          },
+          ticket.id,
+          MapTicketStatus(ticket.status),
+          ticket.reccurrent,
+          ticket.techName || undefined,
+          ticket.createdAt
+        );
+      })
+    );
   }
 }

@@ -1,10 +1,12 @@
 import { ITicketRpository } from "../../entities/ticket/ITicketRepository";
 import { Ticket } from "../../entities/ticket/Ticket";
 import { ticket_gateway } from "../../services/database/prisma";
+import { MapTicketPriority } from "../../services/utils/MapTicketPriority";
+import { MapTicketStatus } from "../../services/utils/MapTicketStatus";
 
 export class TicketRepository implements ITicketRpository {
   async create(ticket: Ticket): Promise<Ticket> {
-    const aTicket = await ticket_gateway.create({
+    const data = await ticket_gateway.create({
       data: {
         description: ticket.description,
         id: ticket.id,
@@ -20,53 +22,47 @@ export class TicketRepository implements ITicketRpository {
 
     return new Ticket(
       {
-        clientName: aTicket.clientName,
-        description: aTicket.description,
-        priority: aTicket.priority,
+        clientName: data.clientName,
+        description: data.description,
+        priority: MapTicketPriority(data.priority),
       },
-      aTicket.id,
-      aTicket.status,
-      aTicket.reccurrent
+      data.id,
+      MapTicketStatus(data.status),
+      data.reccurrent,
+      data.techName || undefined,
+      data.createdAt
     );
   }
 
   async list(): Promise<Ticket[]> {
     const data = await ticket_gateway.findMany({
-      select: {
+      include: {
         client: true,
         tech: true,
-        clientName: true,
-        createdAt: true,
-        description: true,
-        id: true,
-        priority: true,
-        reccurrent: true,
-        status: true,
-        techName: true,
-        updatedAt: true,
+      },
+      orderBy: {
+        createdAt: "asc",
       },
     });
 
-    const tickets = data.map((ticket) => {
+    return data.map((ticket) => {
       return new Ticket(
         {
           clientName: ticket.clientName,
           description: ticket.description,
-          priority: ticket.priority,
+          priority: MapTicketPriority(ticket.priority),
         },
         ticket.id,
-        ticket.status,
+        MapTicketStatus(ticket.status),
         ticket.reccurrent,
-        ticket.tech?.name,
+        ticket.techName || undefined,
         ticket.createdAt
       );
     });
-
-    return tickets;
   }
 
   async setFinished(id: string, techName: string): Promise<Ticket> {
-    const ticket = await ticket_gateway.update({
+    const data = await ticket_gateway.update({
       where: {
         id,
       },
@@ -82,19 +78,20 @@ export class TicketRepository implements ITicketRpository {
 
     return new Ticket(
       {
-        clientName: ticket.clientName,
-        description: ticket.description,
-        priority: ticket.priority,
+        clientName: data.clientName,
+        description: data.description,
+        priority: MapTicketPriority(data.priority),
       },
-      ticket.id,
-      ticket.status,
-      ticket.reccurrent,
-      ticket.tech?.name
+      data.id,
+      MapTicketStatus(data.status),
+      data.reccurrent,
+      data.techName || undefined,
+      data.createdAt
     );
   }
 
   async setProgress(id: string): Promise<Ticket> {
-    const ticket = await ticket_gateway.update({
+    const data = await ticket_gateway.update({
       where: {
         id,
       },
@@ -110,19 +107,20 @@ export class TicketRepository implements ITicketRpository {
 
     return new Ticket(
       {
-        clientName: ticket.clientName,
-        description: ticket.description,
-        priority: ticket.priority,
+        clientName: data.clientName,
+        description: data.description,
+        priority: MapTicketPriority(data.priority),
       },
-      ticket.id,
-      ticket.status,
-      ticket.reccurrent,
-      ticket.tech?.name
+      data.id,
+      MapTicketStatus(data.status),
+      data.reccurrent,
+      data.techName || undefined,
+      data.createdAt
     );
   }
 
   async reopen(id: string): Promise<Ticket> {
-    const ticket = await ticket_gateway.update({
+    const data = await ticket_gateway.update({
       where: {
         id,
       },
@@ -139,14 +137,41 @@ export class TicketRepository implements ITicketRpository {
 
     return new Ticket(
       {
-        clientName: ticket.clientName,
-        description: ticket.description,
-        priority: ticket.priority,
+        clientName: data.clientName,
+        description: data.description,
+        priority: MapTicketPriority(data.priority),
       },
-      ticket.id,
-      ticket.status,
-      ticket.reccurrent,
-      ticket.tech?.name
+      data.id,
+      MapTicketStatus(data.status),
+      data.reccurrent,
+      data.techName || undefined,
+      data.createdAt
+    );
+  }
+
+  async findById(id: string): Promise<Ticket> {
+    const data = await ticket_gateway.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        client: true,
+        tech: true,
+      },
+    });
+
+    if (!data) throw new Error("ticket not found");
+    return new Ticket(
+      {
+        clientName: data.clientName,
+        description: data.description,
+        priority: MapTicketPriority(data.priority),
+      },
+      data.id,
+      MapTicketStatus(data.status),
+      data.reccurrent,
+      data.techName || undefined,
+      data.createdAt
     );
   }
 }
