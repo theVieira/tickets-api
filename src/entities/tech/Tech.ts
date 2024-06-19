@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { TechProps } from "./TechProps";
+import { TechProps, TechStatus } from "./TechProps";
 import { Ticket } from "../ticket/Ticket";
 
 export class Tech {
@@ -10,29 +10,26 @@ export class Tech {
   create_ticket: boolean;
   delete_ticket: boolean;
   color: string;
-  status: "active" | "inactive";
+  status: TechStatus;
   tickets?: Ticket[];
   token?: string;
 
   constructor(
     props: TechProps,
     id?: string,
-    status?: "active" | "inactive",
+    status?: TechStatus,
     tickets?: Ticket[]
   ) {
-    if (!id) {
-      this.id = uuid();
-    } else {
+    /* Optionals */
+    this.id = uuid();
+    this.status = TechStatus.active;
+    if (id) {
       this.id = id;
     }
-    if (!status) {
-      this.status = "active";
-    } else {
+    if (status) {
       this.status = status;
     }
-    if (!tickets) {
-      this.tickets = [];
-    } else {
+    if (tickets) {
       this.tickets = tickets;
     }
 

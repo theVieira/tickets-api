@@ -6,3 +6,8 @@ export type TechProps = {
   delete_ticket: boolean;
   color: string;
 };
+
+export enum TechStatus {
+  active = "active",
+  inactive = "inactive",
+}

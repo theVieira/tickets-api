@@ -1,12 +1,12 @@
 import { v4 as uuid } from "uuid";
-import { TicketProps } from "./TicketProps";
+import { TicketPriority, TicketProps, TicketStatus } from "./TicketProps";
 
 export class Ticket {
   id: string;
   reccurrent: boolean;
   description: string;
-  status: "open" | "progress" | "finished";
-  priority: "urgent" | "high" | "medium" | "low";
+  status: TicketStatus;
+  priority: TicketPriority;
   clientName: string;
   techName?: string;
   createdAt?: Date;
@@ -14,28 +14,23 @@ export class Ticket {
   constructor(
     props: TicketProps,
     id?: string,
-    status?: "open" | "progress" | "finished",
+    status?: TicketStatus,
     reccurent?: boolean,
     techName?: string,
     createdAt?: Date
   ) {
-    if (!id) {
-      this.id = uuid();
-    } else {
+    /* Optionals */
+    this.id = uuid();
+    this.status = TicketStatus.open;
+    this.reccurrent = false;
+    if (id) {
       this.id = id;
     }
-    if (!status) {
-      this.status = "open";
-    } else {
+    if (status) {
       this.status = status;
     }
-    if (!reccurent) {
-      this.reccurrent = false;
-    } else {
+    if (reccurent) {
       this.reccurrent = reccurent;
-    }
-    if (!techName) {
-      this.techName = undefined;
     }
     if (techName) {
       this.techName = techName;

@@ -9,14 +9,12 @@ export class Client {
 
   constructor(props: ClientProps, id?: string, tickets?: Ticket[]) {
     if (props.name.length > 50) throw Error("name char limit over!");
-    if (!id) {
-      this.id = uuid();
-    } else {
+
+    this.id = uuid();
+    if (id) {
       this.id = id;
     }
-    if (!tickets) {
-      this.tickets = undefined;
-    } else {
+    if (tickets) {
       this.tickets = tickets;
     }
 
