@@ -2,19 +2,19 @@ import { sign } from "jsonwebtoken";
 import { ITechRepository } from "../../../entities/tech/ITechRepository";
 import { config } from "dotenv";
 import { compare } from "bcrypt";
-config();
 
-const SECRET = process.env.SECRET_KEY || "";
+config();
+const SECRET = process.env.SECRET_KEY ?? "";
 
 export class AuthTechUseCase {
   constructor(private techRepository: ITechRepository) {}
 
-  async execute(name: string, password: string) {
+  async execute(name: string, password: string): Promise<string> {
     const tech = await this.techRepository.auth(name.toLowerCase());
 
     const verify = await compare(password, tech.password.toString());
 
-    if (verify == false) {
+    if (verify === false) {
       throw new Error("incorrect credentials");
     }
 
@@ -33,6 +33,7 @@ export class AuthTechUseCase {
 
     tech.token = token;
     tech.password = "";
+
     return tech;
   }
 }

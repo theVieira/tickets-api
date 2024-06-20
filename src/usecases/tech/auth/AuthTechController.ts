@@ -6,6 +6,7 @@ export class AuthTechController {
 
   async handle(req: Request, res: Response) {
     const { name, password } = req.body;
+
     try {
       const tech = await this.authTechUseCase.execute(name, password);
       return res.status(200).json(tech);

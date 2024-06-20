@@ -16,21 +16,21 @@ export class CreateTechController {
     } = req.body;
 
     try {
-      const tech = await this.createClientUseCase.execute(
+      const tech = await this.createClientUseCase.execute({
         name,
         password,
         admin,
         create_ticket,
         delete_ticket,
         color,
-        token
-      );
+        token,
+      });
 
       res.status(201).json(tech);
       return;
     } catch (error) {
       if (error instanceof Error)
-        res.status(401).json({ error: error.message });
+        res.status(400).json({ error: error.message });
       return;
     }
   }

@@ -6,6 +6,7 @@ export class ListClientsController {
 
   async handle(req: Request, res: Response): Promise<void> {
     const { token } = req.body;
+
     try {
       const clients = await this.listClientsUseCase.execute(token);
       res.status(200).json(clients);

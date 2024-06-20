@@ -6,6 +6,7 @@ export class SwapTechStatusController {
 
   async handle(req: Request, res: Response) {
     const { name, status, token } = req.body;
+
     try {
       const tech = await this.swapTechStatusUseCase.execute(
         name,

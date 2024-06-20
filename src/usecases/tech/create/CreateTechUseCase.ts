@@ -5,56 +5,49 @@ import { sign } from "jsonwebtoken";
 import { verify } from "jsonwebtoken";
 import { hashSync } from "bcrypt";
 import { IPayload } from "../../../services/jwt/IPayload";
-config();
+import { checkPermission } from "../../../services/checkPermission/CheckPermission";
 
-const SECRET = process.env.SECRET_KEY || "";
+config();
+const SECRET = process.env.SECRET_KEY ?? "";
 
 export class CreateTechUseCase {
   constructor(private techRepository: ITechRepository) {}
 
-  async execute(
-    name: string,
-    password: string,
-    admin: boolean,
-    create_ticket: boolean,
-    delete_ticket: boolean,
-    color: string,
-    token: string
-  ): Promise<Tech> {
-    const jwt = verify(token, SECRET) as IPayload;
+  async execute(props: {
+    name: string;
+    password: string;
+    admin: boolean;
+    create_ticket: boolean;
+    delete_ticket: boolean;
+    color: string;
+    token: string;
+  }): Promise<Tech> {
+    const { permissions } = verify(props.token, SECRET) as IPayload;
 
-    if (jwt.admin === false) throw new Error("must be admin");
-
-    if (password.length < 8) {
-      throw Error("password must be at least 8 characters long");
+    if (checkPermission(Object.assign(this, permissions), "admin") === false) {
+      throw new Error("ForbiddenError");
     }
-    const hashedPassword = hashSync(password, 8);
-    const tech = new Tech({
-      admin,
-      color,
-      create_ticket,
-      delete_ticket,
-      name,
-      password: hashedPassword,
-    });
 
-    const aTech = await this.techRepository.create(tech);
+    props.password = hashSync(props.password, 8);
 
-    const aToken = await sign(
+    const tech = new Tech(Object.assign(this, props));
+    const created = await this.techRepository.create(tech);
+
+    const generatedToken = sign(
       {
-        name: aTech.name,
-        password: aTech.password,
+        name: created.name,
+        status: created.status,
         permissions: {
-          create_ticket: aTech.create_ticket,
-          delete_ticket: aTech.delete_ticket,
-          admin: aTech.admin,
+          create_ticket: created.create_ticket,
+          delete_ticket: created.delete_ticket,
+          admin: created.admin,
         },
       },
       SECRET
     );
 
-    aTech.token = aToken;
+    created.token = generatedToken;
 
-    return aTech;
+    return created;
   }
 }

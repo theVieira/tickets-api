@@ -3,8 +3,10 @@ import { ITicketRpository } from "../../../entities/ticket/ITicketRepository";
 import { Ticket } from "../../../entities/ticket/Ticket";
 import { config } from "dotenv";
 import { IPayload } from "../../../services/jwt/IPayload";
-config();
+import { checkPermission } from "../../../services/checkPermission/CheckPermission";
+import { MapTicketPriority } from "../../../services/utils/MapTicketPriority";
 
+config();
 const SECRET = process.env.SECRET_KEY || "";
 
 export class CreateTicketUseCase {
@@ -15,19 +17,21 @@ export class CreateTicketUseCase {
     priority: "urgent" | "high" | "medium" | "low",
     clientName: string,
     token: string
-  ) {
-    const decoded = verify(token, SECRET) as IPayload;
+  ): Promise<Ticket> {
+    const { permissions } = verify(token, SECRET) as IPayload;
 
-    if (
-      decoded.permissions.admin === false ||
-      decoded.permissions.create_ticket === false
-    ) {
-      throw new Error("not permission");
+    if (checkPermission(Object.assign(this, permissions), "admin") === false) {
+      throw new Error("ForbiddenError");
     }
 
-    const ticket = new Ticket({ clientName, priority, description });
+    const ticket = new Ticket({
+      clientName,
+      priority: MapTicketPriority(priority),
+      description,
+    });
 
-    const aTicket = await this.ticketRepository.create(ticket);
-    return aTicket;
+    const created = await this.ticketRepository.create(ticket);
+
+    return created;
   }
 }

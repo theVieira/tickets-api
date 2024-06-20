@@ -6,6 +6,7 @@ export class ListTicketsController {
 
   async handle(req: Request, res: Response) {
     const { token } = req.body;
+
     try {
       const tickets = await this.listTicketsUseCase.execute(token);
       return res.status(200).json(tickets);
