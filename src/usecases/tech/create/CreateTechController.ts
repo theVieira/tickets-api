@@ -6,11 +6,11 @@ export class CreateTechController {
   constructor(private createClientUseCase: CreateTechUseCase) {}
 
   async handle(req: Request, res: Response): Promise<void> {
-    const token = getToken(req);
     const { name, password, admin, create_ticket, delete_ticket, color } =
       req.body;
 
     try {
+      const token = getToken(req);
       const tech = await this.createClientUseCase.execute({
         name,
         password,

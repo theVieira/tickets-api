@@ -6,10 +6,10 @@ export class CreateClientController {
   constructor(private createClientUseCase: CreateClientUseCase) {}
 
   async handle(req: Request, res: Response): Promise<void> {
-    const token = getToken(req);
     const { name } = req.body;
 
     try {
+      const token = getToken(req);
       const client = await this.createClientUseCase.execute(name, token);
       res.status(201).json(client);
       return;

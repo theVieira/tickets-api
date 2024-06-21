@@ -6,10 +6,10 @@ export class SetProgressController {
   constructor(private updateTicketStatusUseCase: SetProgressUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const token = getToken(req);
     const { id } = req.body;
 
     try {
+      const token = getToken(req);
       const ticket = await this.updateTicketStatusUseCase.execute(id, token);
       return res.status(200).json(ticket);
     } catch (error) {

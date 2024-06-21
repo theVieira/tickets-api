@@ -6,9 +6,8 @@ export class ListTechsController {
   constructor(private listTechsUseCase: ListTechsUseCase) {}
 
   async handle(req: Request, res: Response): Promise<void> {
-    const token = getToken(req);
-
     try {
+      const token = getToken(req);
       const techs = await this.listTechsUseCase.execute(token);
       res.status(200).json(techs);
       return;

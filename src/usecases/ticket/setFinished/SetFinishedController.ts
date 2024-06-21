@@ -6,10 +6,10 @@ export class SetFinishedController {
   constructor(private updateTicketStatusUseCase: SetFinishedUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const token = getToken(req);
     const { id, techName } = req.body;
 
     try {
+      const token = getToken(req);
       const ticket = await this.updateTicketStatusUseCase.execute(
         id,
         token,

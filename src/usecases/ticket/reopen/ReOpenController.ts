@@ -6,10 +6,10 @@ export class ReOpenController {
   constructor(private reOpenUseCase: ReOpenUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const token = getToken(req);
     const { id } = req.body;
 
     try {
+      const token = getToken(req);
       const ticket = await this.reOpenUseCase.execute(id, token);
       return res.status(200).json(ticket);
     } catch (error) {

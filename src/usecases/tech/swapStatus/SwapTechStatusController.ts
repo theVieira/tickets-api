@@ -6,10 +6,10 @@ export class SwapTechStatusController {
   constructor(private swapTechStatusUseCase: SwapTechStatusUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const token = getToken(req);
     const { name, status } = req.body;
 
     try {
+      const token = getToken(req);
       const tech = await this.swapTechStatusUseCase.execute(
         name,
         status,

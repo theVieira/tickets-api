@@ -6,9 +6,8 @@ export class ListTicketsController {
   constructor(private listTicketsUseCase: ListTicketsUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const token = getToken(req);
-
     try {
+      const token = getToken(req);
       const tickets = await this.listTicketsUseCase.execute(token);
       return res.status(200).json(tickets);
     } catch (error) {

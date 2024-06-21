@@ -6,9 +6,8 @@ export class ListClientsController {
   constructor(private listClientsUseCase: ListClientsUseCase) {}
 
   async handle(req: Request, res: Response): Promise<void> {
-    const token = getToken(req);
-
     try {
+      const token = getToken(req);
       const clients = await this.listClientsUseCase.execute(token);
       res.status(200).json(clients);
       return;
