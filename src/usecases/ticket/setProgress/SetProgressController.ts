@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { SetProgressUseCase } from "./SetProgressUseCase";
+import { getToken } from "../../../services/jwt/GetToken";
 
 export class SetProgressController {
   constructor(private updateTicketStatusUseCase: SetProgressUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const { id, token } = req.body;
+    const token = getToken(req);
+    const { id } = req.body;
 
     try {
       const ticket = await this.updateTicketStatusUseCase.execute(id, token);

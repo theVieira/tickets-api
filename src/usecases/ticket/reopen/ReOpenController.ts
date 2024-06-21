@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { ReOpenUseCase } from "./ReOpenUseCase";
+import { getToken } from "../../../services/jwt/GetToken";
 
 export class ReOpenController {
   constructor(private reOpenUseCase: ReOpenUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const { id, token } = req.body;
+    const token = getToken(req);
+    const { id } = req.body;
 
     try {
       const ticket = await this.reOpenUseCase.execute(id, token);

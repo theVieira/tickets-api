@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { SetFinishedUseCase } from "./SetFinishedUseCase";
+import { getToken } from "../../../services/jwt/GetToken";
 
 export class SetFinishedController {
   constructor(private updateTicketStatusUseCase: SetFinishedUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const { id, techName, token } = req.body;
+    const token = getToken(req);
+    const { id, techName } = req.body;
 
     try {
       const ticket = await this.updateTicketStatusUseCase.execute(

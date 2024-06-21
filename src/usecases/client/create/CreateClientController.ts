@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { CreateClientUseCase } from "./CreateClientUseCase";
+import { getToken } from "../../../services/jwt/GetToken";
 
 export class CreateClientController {
   constructor(private createClientUseCase: CreateClientUseCase) {}
 
   async handle(req: Request, res: Response): Promise<void> {
-    const { name, token } = req.body;
+    const token = getToken(req);
+    const { name } = req.body;
 
     try {
       const client = await this.createClientUseCase.execute(name, token);

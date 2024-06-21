@@ -1,19 +1,14 @@
 import { Request, Response } from "express";
 import { CreateTechUseCase } from "./CreateTechUseCase";
+import { getToken } from "../../../services/jwt/GetToken";
 
 export class CreateTechController {
   constructor(private createClientUseCase: CreateTechUseCase) {}
 
   async handle(req: Request, res: Response): Promise<void> {
-    const {
-      name,
-      password,
-      admin,
-      create_ticket,
-      delete_ticket,
-      color,
-      token,
-    } = req.body;
+    const token = getToken(req);
+    const { name, password, admin, create_ticket, delete_ticket, color } =
+      req.body;
 
     try {
       const tech = await this.createClientUseCase.execute({

@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { ListTicketsUseCase } from "./ListTicketsUseCase";
+import { getToken } from "../../../services/jwt/GetToken";
 
 export class ListTicketsController {
   constructor(private listTicketsUseCase: ListTicketsUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const { token } = req.body;
+    const token = getToken(req);
 
     try {
       const tickets = await this.listTicketsUseCase.execute(token);
