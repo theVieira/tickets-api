@@ -15,7 +15,7 @@ ticketRoutes.put("/finished", (req: Request, res: Response) => {
   setFinishedController.handle(req, res);
 });
 
-ticketRoutes.post("/list", (req: Request, res: Response) => {
+ticketRoutes.get("/list", (req: Request, res: Response) => {
   listTicketsController.handle(req, res);
 });
 
