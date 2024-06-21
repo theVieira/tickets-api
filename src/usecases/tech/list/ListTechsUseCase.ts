@@ -14,13 +14,22 @@ export class ListTechsUseCase {
   async execute(token: string): Promise<Tech[]> {
     const { permissions } = verify(token, SECRET) as IPayload;
 
-    const techs = await this.techRepository.list();
+    const data = await this.techRepository.list();
 
     if (checkPermission(Object.assign(this, permissions), "admin")) {
-      return techs;
+      return data.map((tech) => {
+        tech.password = "";
+        return new Tech(
+          Object.assign(this, tech),
+          tech.id,
+          tech.status,
+          tech.tickets
+        );
+      });
     }
 
-    return techs.map((tech) => {
+    return data.map((tech) => {
+      tech.password = "";
       return new Tech(
         Object.assign(this, tech),
         tech.id,
