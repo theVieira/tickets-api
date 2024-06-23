@@ -174,4 +174,14 @@ export class TicketRepository implements ITicketRpository {
       data.createdAt
     );
   }
+
+  async delete(id: string): Promise<void> {
+    await ticket_gateway.delete({
+      where: {
+        id,
+      },
+    });
+
+    return;
+  }
 }
