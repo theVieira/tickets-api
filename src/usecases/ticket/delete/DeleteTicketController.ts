@@ -9,7 +9,8 @@ export class DeleteTicketController {
     const { id } = req.body;
     try {
       const token = getToken(req);
-      await this.deleteTicketUseCase.execute(id, token);
+      const ticket = await this.deleteTicketUseCase.execute(id, token);
+      return res.status(200).json(ticket);
     } catch (error) {
       if (error instanceof Error) {
         return res.status(401).json({ error: error.message });

@@ -11,15 +11,21 @@ export class ListTicketsUseCase {
   constructor(private ticketRepository: ITicketRpository) {}
 
   async execute(token: string) {
-    const { permissions } = verify(token, SECRET) as IPayload;
+    const jwt = verify(token, SECRET) as IPayload;
+    console.log(jwt);
 
     const allTickets = await this.ticketRepository.list();
     const openTickets = allTickets.map((ticket) => ticket.status === "open");
 
-    if (checkPermission(Object.assign(this, permissions), "admin") === true) {
-      return allTickets;
+    if (
+      checkPermission(Object.assign(this, jwt.permissions), "admin") === true
+    ) {
+      return {
+        tickets: allTickets,
+        tech: jwt,
+      };
     }
 
-    return openTickets;
+    return { tickets: openTickets, tech: jwt };
   }
 }

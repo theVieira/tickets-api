@@ -11,7 +11,8 @@ export class AuthTechUseCase {
   constructor(private techRepository: ITechRepository) {}
 
   async execute(name: string, password: string): Promise<Tech> {
-    const tech = await this.techRepository.auth(name.toLowerCase());
+    const formattedName = name.toString().toLowerCase()
+    const tech = await this.techRepository.auth(formattedName);
 
     const verify = await compare(password, tech.password.toString());
 

@@ -175,13 +175,24 @@ export class TicketRepository implements ITicketRpository {
     );
   }
 
-  async delete(id: string): Promise<void> {
-    await ticket_gateway.delete({
+  async delete(id: string): Promise<Ticket> {
+    const data = await ticket_gateway.delete({
       where: {
         id,
       },
     });
 
-    return;
+    return new Ticket(
+      {
+        clientName: data.clientName,
+        description: data.description,
+        priority: MapTicketPriority(data.priority),
+      },
+      data.id,
+      MapTicketStatus(data.status),
+      data.reccurrent,
+      data.techName ?? undefined,
+      data.createdAt
+    );
   }
 }
