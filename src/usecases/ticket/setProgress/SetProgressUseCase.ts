@@ -13,12 +13,6 @@ export class SetProgressUseCase {
   constructor(private ticketRepository: ITicketRpository) {}
 
   async execute(id: string, techName: string, token: string): Promise<Ticket> {
-    const { permissions } = verify(token, SECRET) as IPayload;
-
-    if (checkPermission(Object.assign(this, permissions), "admin") === false) {
-      throw new Error("ForbiddenError");
-    }
-
     const techRepository = new TechRepository();
     const tech = await techRepository.findByName(techName);
 

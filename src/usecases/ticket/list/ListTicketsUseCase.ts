@@ -15,7 +15,9 @@ export class ListTicketsUseCase {
     console.log(jwt);
 
     const allTickets = await this.ticketRepository.list();
-    const openTickets = allTickets.map((ticket) => ticket.status != "finished");
+    const openTickets = allTickets.filter(
+      (ticket) => ticket.status != "finished"
+    );
 
     if (
       checkPermission(Object.assign(this, jwt.permissions), "admin") === true
