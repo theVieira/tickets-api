@@ -1,3 +1,4 @@
+import { Tech } from "../../entities/tech/Tech";
 import { ITicketRpository } from "../../entities/ticket/ITicketRepository";
 import { Ticket } from "../../entities/ticket/Ticket";
 import { ticket_gateway } from "../../services/database/prisma";
@@ -61,14 +62,14 @@ export class TicketRepository implements ITicketRpository {
     });
   }
 
-  async setFinished(id: string, techName: string): Promise<Ticket> {
+  async setFinished(id: string, tech: Tech): Promise<Ticket> {
     const data = await ticket_gateway.update({
       where: {
         id,
       },
       data: {
         status: "finished",
-        techName,
+        techName: tech.name,
       },
       include: {
         client: true,
@@ -90,14 +91,14 @@ export class TicketRepository implements ITicketRpository {
     );
   }
 
-  async setProgress(id: string): Promise<Ticket> {
+  async setProgress(id: string, tech: Tech): Promise<Ticket> {
     const data = await ticket_gateway.update({
       where: {
         id,
       },
       data: {
         status: "progress",
-        techName: "",
+        techName: tech.name,
       },
       include: {
         client: true,
@@ -127,7 +128,8 @@ export class TicketRepository implements ITicketRpository {
       data: {
         status: "open",
         reccurrent: true,
-        techName: "",
+        techName: undefined,
+        tech: undefined,
       },
       include: {
         client: true,
