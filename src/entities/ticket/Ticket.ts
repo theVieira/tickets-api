@@ -10,6 +10,7 @@ export class Ticket {
   clientName: string;
   techName?: string;
   createdAt?: Date;
+  techColor?: string;
 
   constructor(
     props: TicketProps,
@@ -17,7 +18,8 @@ export class Ticket {
     status?: TicketStatus,
     reccurent?: boolean,
     techName?: string,
-    createdAt?: Date
+    createdAt?: Date,
+    techColor?: string
   ) {
     /* Optionals */
     this.id = uuid();
@@ -37,6 +39,9 @@ export class Ticket {
     }
     if (createdAt) {
       this.createdAt = createdAt;
+    }
+    if (techColor) {
+      this.techColor = techColor;
     }
 
     this.description = props.description;

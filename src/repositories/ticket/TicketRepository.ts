@@ -57,7 +57,8 @@ export class TicketRepository implements ITicketRpository {
         MapTicketStatus(ticket.status),
         ticket.reccurrent,
         ticket.techName || undefined,
-        ticket.createdAt
+        ticket.createdAt,
+        ticket.tech?.color
       );
     });
   }
