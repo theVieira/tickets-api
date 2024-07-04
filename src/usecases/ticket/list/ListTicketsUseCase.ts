@@ -12,7 +12,6 @@ export class ListTicketsUseCase {
 
   async execute(token: string) {
     const jwt = verify(token, SECRET) as IPayload;
-    console.log(jwt);
 
     const allTickets = await this.ticketRepository.list();
     const openTickets = allTickets.filter(
