@@ -6,4 +6,5 @@ export interface ITechRepository {
   list(): Promise<Tech[]>;
   swapStatus(id: string, status: "active" | "inactive"): Promise<Tech>;
   auth(name: string): Promise<Tech>;
+  replacePassword(name: string, newPassword: string): Promise<Tech>;
 }

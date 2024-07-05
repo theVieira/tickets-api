@@ -220,4 +220,43 @@ export class TechRepository implements ITechRepository {
       })
     );
   }
+
+  async replacePassword(name: string, newPassword: string): Promise<Tech> {
+    const data = await tech_gateway.update({
+      where: {
+        name,
+      },
+      data: {
+        password: newPassword,
+      },
+      include: {
+        tickets: {
+          include: {
+            tech: true,
+          },
+        },
+      },
+    });
+
+    return new Tech(
+      Object.assign(this, data),
+      data.id,
+      MapTechStatus(data.status),
+      data.tickets.map((ticket) => {
+        return new Ticket(
+          {
+            clientName: ticket.clientName,
+            description: ticket.description,
+            priority: MapTicketPriority(ticket.priority),
+          },
+          ticket.id,
+          MapTicketStatus(ticket.status),
+          ticket.reccurrent,
+          ticket.tech?.name,
+          ticket.createdAt,
+          ticket.tech?.color
+        );
+      })
+    );
+  }
 }
