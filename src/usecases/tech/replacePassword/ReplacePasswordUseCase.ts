@@ -4,7 +4,7 @@ import { IPayload } from "../../../services/jwt/IPayload";
 import { config } from "dotenv";
 import { checkPermission } from "../../../services/checkPermission/CheckPermission";
 import { Tech } from "../../../entities/tech/Tech";
-import { hashSync } from "bcrypt";
+import { compareSync, hashSync } from "bcrypt";
 
 config();
 const SECRET = process.env.SECRET_KEY ?? "";
@@ -26,7 +26,8 @@ export class ReplacePasswordUseCase {
 
     const findTech = await this.techRepository.findByName(name);
     if (findTech instanceof Tech) {
-      if (findTech.password !== password) {
+      const compare = compareSync(password, findTech.password);
+      if (compare == false) {
         throw new Error("incorrect credentials");
       }
 
