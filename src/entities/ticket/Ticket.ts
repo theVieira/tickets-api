@@ -25,6 +25,7 @@ export class Ticket {
     this.id = uuid();
     this.status = TicketStatus.open;
     this.reccurrent = false;
+
     if (id) {
       this.id = id;
     }
@@ -46,6 +47,17 @@ export class Ticket {
 
     this.description = props.description;
     this.priority = props.priority;
-    this.clientName = props.clientName;
+    this.clientName = this.formatName(props.clientName);
+  }
+
+  formatName(name: string): string {
+    const names = name.toLowerCase().split(" ");
+
+    const formatNames = names.map((name) => {
+      return name.charAt(0).toUpperCase() + name.substring(1);
+    });
+
+    const formattedName = formatNames.join(" ");
+    return formattedName;
   }
 }

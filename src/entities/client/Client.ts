@@ -18,6 +18,17 @@ export class Client {
       this.tickets = tickets;
     }
 
-    this.name = props.name.toLowerCase();
+    this.name = this.formatName(props.name);
+  }
+
+  formatName(name: string): string {
+    const names = name.toLowerCase().split(" ");
+
+    const formatNames = names.map((name) => {
+      return name.charAt(0).toUpperCase() + name.substring(1);
+    });
+
+    const formattedName = formatNames.join(" ");
+    return formattedName;
   }
 }
