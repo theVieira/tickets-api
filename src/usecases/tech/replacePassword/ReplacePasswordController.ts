@@ -9,13 +9,10 @@ export class ReplacePasswordController {
     const { name, password, newPassword } = req.body;
 
     try {
-      const token = getToken(req);
-
       const tech = await this.replacePasswordUseCase.execute(
         name,
         password,
-        newPassword,
-        token
+        newPassword
       );
       return res.status(200).json(tech);
     } catch (error) {

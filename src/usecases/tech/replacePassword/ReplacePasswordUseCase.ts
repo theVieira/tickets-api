@@ -12,18 +12,7 @@ const SECRET = process.env.SECRET_KEY ?? "";
 export class ReplacePasswordUseCase {
   constructor(private techRepository: ITechRepository) {}
 
-  async execute(
-    name: string,
-    password: string,
-    newPassword: string,
-    token: string
-  ) {
-    const { permissions } = verify(token, SECRET) as IPayload;
-
-    if (checkPermission(permissions, "admin") == false) {
-      throw new Error("ForbiddenError");
-    }
-
+  async execute(name: string, password: string, newPassword: string) {
     const findTech = await this.techRepository.findByName(name);
     if (findTech instanceof Tech) {
       const compare = compareSync(password, findTech.password);
