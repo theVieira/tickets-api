@@ -25,7 +25,12 @@ export class CreateTicketUseCase {
     const bot = new Telegraf(BOT_TOKEN);
     const { permissions } = verify(token, SECRET) as IPayload;
 
-    if (checkPermission(Object.assign(this, permissions), "admin") === false) {
+    if (
+      checkPermission(
+        Object.assign(this, permissions),
+        "admin" || "create_ticket"
+      ) === false
+    ) {
       throw new Error("ForbiddenError");
     }
 
