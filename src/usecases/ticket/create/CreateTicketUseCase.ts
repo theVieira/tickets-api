@@ -49,15 +49,17 @@ export class CreateTicketUseCase {
       CHAT_ID,
       `Novo chamado criado\nCliente: ${ticket.clientName}\nDescrição: ${
         ticket.description
-      }\nPrioridade: ${formatPriority(ticket.priority)}`
+      }\nPrioridade: ${translate(ticket.priority)}\nCategoria: ${translate(
+        ticket.category
+      )}`
     );
 
     return created;
   }
 }
 
-function formatPriority(priority: TicketPriority) {
-  switch (priority) {
+function translate(string: string) {
+  switch (string) {
     case "urgent":
       return "Urgente";
     case "high":
@@ -66,5 +68,14 @@ function formatPriority(priority: TicketPriority) {
       return "Média";
     case "low":
       return "Baixa";
+    case "daily":
+      return "Diário";
+    case "delivery":
+      return "Entrega";
+    case "budget":
+      return "Orçamento";
+
+    default:
+      throw new Error("unknow string");
   }
 }
