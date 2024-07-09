@@ -3,6 +3,7 @@ import { Tech } from "../../entities/tech/Tech";
 import { Ticket } from "../../entities/ticket/Ticket";
 import { tech_gateway } from "../../services/database/prisma";
 import { MapTechStatus } from "../../services/utils/MapTechStatus";
+import { MapTicketCategory } from "../../services/utils/MapTicketCategory";
 import { MapTicketPriority } from "../../services/utils/MapTicketPriority";
 import { MapTicketStatus } from "../../services/utils/MapTicketStatus";
 
@@ -41,6 +42,7 @@ export class TechRepository implements ITechRepository {
             clientName: ticket.clientName,
             description: ticket.description,
             priority: MapTicketPriority(ticket.priority),
+            category: MapTicketCategory(ticket.category),
           },
           ticket.id,
           MapTicketStatus(ticket.status),
@@ -79,6 +81,7 @@ export class TechRepository implements ITechRepository {
               clientName: ticket.clientName,
               description: ticket.description,
               priority: MapTicketPriority(ticket.priority),
+              category: MapTicketCategory(ticket.category),
             },
             ticket.id,
             MapTicketStatus(ticket.status),
@@ -124,6 +127,7 @@ export class TechRepository implements ITechRepository {
             clientName: ticket.clientName,
             description: ticket.description,
             priority: MapTicketPriority(ticket.priority),
+            category: MapTicketCategory(ticket.category),
           },
           ticket.id,
           MapTicketStatus(ticket.status),
@@ -167,6 +171,7 @@ export class TechRepository implements ITechRepository {
             clientName: ticket.clientName,
             description: ticket.description,
             priority: MapTicketPriority(ticket.priority),
+            category: MapTicketCategory(ticket.category),
           },
           ticket.id,
           MapTicketStatus(ticket.status),
@@ -210,6 +215,7 @@ export class TechRepository implements ITechRepository {
             clientName: ticket.clientName,
             description: ticket.description,
             priority: MapTicketPriority(ticket.priority),
+            category: MapTicketCategory(ticket.category),
           },
           ticket.id,
           MapTicketStatus(ticket.status),
@@ -248,6 +254,7 @@ export class TechRepository implements ITechRepository {
             clientName: ticket.clientName,
             description: ticket.description,
             priority: MapTicketPriority(ticket.priority),
+            category: MapTicketCategory(ticket.category),
           },
           ticket.id,
           MapTicketStatus(ticket.status),

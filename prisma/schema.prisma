@@ -27,6 +27,7 @@ model Ticket {
   description String
   status      TicketStatus
   priority    TicketPriority
+  category    TicketCategory
   clientName  String
   client      Client          @relation(fields: [clientName], references: [name])
   techName    String? 
@@ -60,6 +61,12 @@ enum TicketPriority {
   high
   medium
   low
+}
+
+enum TicketCategory {
+  daily
+  delivery
+  budget
 }
 
 enum TechStatus {

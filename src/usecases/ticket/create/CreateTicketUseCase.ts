@@ -7,6 +7,7 @@ import { checkPermission } from "../../../services/checkPermission/CheckPermissi
 import { MapTicketPriority } from "../../../services/utils/MapTicketPriority";
 import { Telegraf } from "telegraf";
 import { TicketPriority } from "../../../entities/ticket/TicketProps";
+import { MapTicketCategory } from "../../../services/utils/MapTicketCategory";
 
 config();
 const SECRET = process.env.SECRET_KEY ?? "";
@@ -20,6 +21,7 @@ export class CreateTicketUseCase {
     description: string,
     priority: "urgent" | "high" | "medium" | "low",
     clientName: string,
+    category: "daily" | "budget" | "delivery",
     token: string
   ): Promise<Ticket> {
     const bot = new Telegraf(BOT_TOKEN);
@@ -37,6 +39,7 @@ export class CreateTicketUseCase {
     const ticket = new Ticket({
       clientName,
       priority: MapTicketPriority(priority),
+      category: MapTicketCategory(category),
       description,
     });
 

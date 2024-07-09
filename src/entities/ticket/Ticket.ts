@@ -1,5 +1,10 @@
 import { v4 as uuid } from "uuid";
-import { TicketPriority, TicketProps, TicketStatus } from "./TicketProps";
+import {
+  TicketCategory,
+  TicketPriority,
+  TicketProps,
+  TicketStatus,
+} from "./TicketProps";
 
 export class Ticket {
   id: string;
@@ -7,6 +12,7 @@ export class Ticket {
   description: string;
   status: TicketStatus;
   priority: TicketPriority;
+  category: TicketCategory;
   clientName: string;
   techName?: string;
   createdAt?: Date;
@@ -45,6 +51,7 @@ export class Ticket {
       this.techColor = techColor;
     }
 
+    this.category = props.category;
     this.description = props.description;
     this.priority = props.priority;
     this.clientName = this.formatName(props.clientName);

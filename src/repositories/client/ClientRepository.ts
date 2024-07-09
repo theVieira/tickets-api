@@ -2,6 +2,7 @@ import { Client } from "../../entities/client/Client";
 import { IClientRepository } from "../../entities/client/IClientRepository";
 import { Ticket } from "../../entities/ticket/Ticket";
 import { client_gateway } from "../../services/database/prisma";
+import { MapTicketCategory } from "../../services/utils/MapTicketCategory";
 import { MapTicketPriority } from "../../services/utils/MapTicketPriority";
 import { MapTicketStatus } from "../../services/utils/MapTicketStatus";
 
@@ -20,12 +21,14 @@ export class ClientRepository implements IClientRepository {
     const tickets = data.tickets.map((ticket) => {
       const priority = MapTicketPriority(ticket.priority);
       const status = MapTicketStatus(ticket.status);
+      const category = MapTicketCategory(ticket.category);
 
       return new Ticket(
         {
           clientName: ticket.clientName,
           description: ticket.description,
           priority,
+          category,
         },
         ticket.id,
         status,
@@ -55,6 +58,7 @@ export class ClientRepository implements IClientRepository {
             clientName: ticket.clientName,
             description: ticket.description,
             priority: MapTicketPriority(ticket.priority),
+            category: MapTicketCategory(ticket.category),
           },
           ticket.id,
           MapTicketStatus(ticket.status),
@@ -90,6 +94,7 @@ export class ClientRepository implements IClientRepository {
             clientName: ticket.clientName,
             description: ticket.description,
             priority: MapTicketPriority(ticket.priority),
+            category: MapTicketCategory(ticket.category),
           },
           ticket.id,
           MapTicketStatus(ticket.status),

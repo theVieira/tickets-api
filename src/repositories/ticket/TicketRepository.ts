@@ -2,6 +2,7 @@ import { Tech } from "../../entities/tech/Tech";
 import { ITicketRpository } from "../../entities/ticket/ITicketRepository";
 import { Ticket } from "../../entities/ticket/Ticket";
 import { ticket_gateway } from "../../services/database/prisma";
+import { MapTicketCategory } from "../../services/utils/MapTicketCategory";
 import { MapTicketPriority } from "../../services/utils/MapTicketPriority";
 import { MapTicketStatus } from "../../services/utils/MapTicketStatus";
 
@@ -12,6 +13,7 @@ export class TicketRepository implements ITicketRpository {
         description: ticket.description,
         id: ticket.id,
         priority: ticket.priority,
+        category: ticket.category,
         reccurrent: ticket.reccurrent,
         status: ticket.status,
         clientName: ticket.clientName,
@@ -26,6 +28,7 @@ export class TicketRepository implements ITicketRpository {
         clientName: data.clientName,
         description: data.description,
         priority: MapTicketPriority(data.priority),
+        category: MapTicketCategory(data.category),
       },
       data.id,
       MapTicketStatus(data.status),
@@ -51,6 +54,7 @@ export class TicketRepository implements ITicketRpository {
         {
           clientName: ticket.clientName,
           description: ticket.description,
+          category: MapTicketCategory(ticket.category),
           priority: MapTicketPriority(ticket.priority),
         },
         ticket.id,
@@ -83,6 +87,7 @@ export class TicketRepository implements ITicketRpository {
         clientName: data.clientName,
         description: data.description,
         priority: MapTicketPriority(data.priority),
+        category: MapTicketCategory(data.category),
       },
       data.id,
       MapTicketStatus(data.status),
@@ -112,6 +117,7 @@ export class TicketRepository implements ITicketRpository {
         clientName: data.clientName,
         description: data.description,
         priority: MapTicketPriority(data.priority),
+        category: MapTicketCategory(data.category),
       },
       data.id,
       MapTicketStatus(data.status),
@@ -143,6 +149,7 @@ export class TicketRepository implements ITicketRpository {
         clientName: data.clientName,
         description: data.description,
         priority: MapTicketPriority(data.priority),
+        category: MapTicketCategory(data.category),
       },
       data.id,
       MapTicketStatus(data.status),
@@ -169,6 +176,7 @@ export class TicketRepository implements ITicketRpository {
         clientName: data.clientName,
         description: data.description,
         priority: MapTicketPriority(data.priority),
+        category: MapTicketCategory(data.category),
       },
       data.id,
       MapTicketStatus(data.status),
@@ -190,6 +198,7 @@ export class TicketRepository implements ITicketRpository {
         clientName: data.clientName,
         description: data.description,
         priority: MapTicketPriority(data.priority),
+        category: MapTicketCategory(data.category),
       },
       data.id,
       MapTicketStatus(data.status),

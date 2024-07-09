@@ -3,6 +3,7 @@ import { ITicketRpository } from "../../../entities/ticket/ITicketRepository";
 import { config } from "dotenv";
 import { IPayload } from "../../../services/jwt/IPayload";
 import { checkPermission } from "../../../services/checkPermission/CheckPermission";
+import { orderTickets } from "../../../services/utils/OrderTickets";
 
 config();
 const SECRET = process.env.SECRET_KEY || "";
@@ -10,7 +11,7 @@ const SECRET = process.env.SECRET_KEY || "";
 export class ListTicketsUseCase {
   constructor(private ticketRepository: ITicketRpository) {}
 
-  async execute(token: string) {
+  async execute(token: string, order: "all" | "delivery" | "daily" | "budget") {
     const jwt = verify(token, SECRET) as IPayload;
 
     const allTickets = await this.ticketRepository.list();
@@ -21,9 +22,9 @@ export class ListTicketsUseCase {
     if (
       checkPermission(Object.assign(this, jwt.permissions), "admin") === true
     ) {
-      return allTickets;
+      return orderTickets(allTickets, order);
     }
 
-    return openTickets;
+    return orderTickets(openTickets, order);
   }
 }

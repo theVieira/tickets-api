@@ -6,7 +6,7 @@ export class CreateTicketController {
   constructor(private createTicketUseCase: CreateTicketUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const { description, clientName, priority } = req.body;
+    const { description, clientName, priority, category } = req.body;
 
     try {
       const token = getToken(req);
@@ -14,6 +14,7 @@ export class CreateTicketController {
         description,
         priority,
         clientName,
+        category,
         token
       );
 
