@@ -63,7 +63,8 @@ export class ClientRepository implements IClientRepository {
           ticket.id,
           MapTicketStatus(ticket.status),
           ticket.reccurrent,
-          ticket.techName || undefined
+          ticket.techName || undefined,
+          ticket.createdAt
         );
       });
 
