@@ -6,8 +6,8 @@ import { IPayload } from "../../../services/jwt/IPayload";
 import { checkPermission } from "../../../services/checkPermission/CheckPermission";
 import { MapTicketPriority } from "../../../services/utils/MapTicketPriority";
 import { Telegraf } from "telegraf";
-import { TicketPriority } from "../../../entities/ticket/TicketProps";
 import { MapTicketCategory } from "../../../services/utils/MapTicketCategory";
+import { Translate } from "../../../services/utils/Translate";
 
 config();
 const SECRET = process.env.SECRET_KEY ?? "";
@@ -49,33 +49,11 @@ export class CreateTicketUseCase {
       CHAT_ID,
       `Novo chamado criado\nCliente: ${ticket.clientName}\nDescrição: ${
         ticket.description
-      }\nPrioridade: ${translate(ticket.priority)}\nCategoria: ${translate(
+      }\nPrioridade: ${Translate(ticket.priority)}\nCategoria: ${Translate(
         ticket.category
       )}`
     );
 
     return created;
-  }
-}
-
-function translate(string: string) {
-  switch (string) {
-    case "urgent":
-      return "Urgente";
-    case "high":
-      return "Alta";
-    case "medium":
-      return "Média";
-    case "low":
-      return "Baixa";
-    case "daily":
-      return "Diário";
-    case "delivery":
-      return "Entrega";
-    case "budget":
-      return "Orçamento";
-
-    default:
-      throw new Error("unknow string");
   }
 }
