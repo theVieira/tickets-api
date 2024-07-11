@@ -7,74 +7,58 @@ import {
 export function orderTickets(
   tickets: Ticket[],
   order: "daily" | "delivery" | "budget" | "all"
-) {
+): Ticket[] {
   switch (order) {
     case "all":
-      return tickets;
+      return orderByPriority(tickets);
 
     case "daily":
-      return getDaily(tickets);
+      const dailys: Ticket[] = getDaily(tickets);
+      return orderByPriority(dailys);
 
     case "delivery":
-      return getDelivery(tickets);
+      const deliverys: Ticket[] = getDelivery(tickets);
+      return orderByPriority(deliverys);
 
     case "budget":
-      return getBudget(tickets);
+      const budgets: Ticket[] = getBudget(tickets);
+      return orderByPriority(budgets);
   }
 }
 
-function getDaily(tickets: Ticket[]) {
-  const newArray = tickets.filter(
-    (ticket) => ticket.category == TicketCategory.daily
-  );
-
-  const orderedTickets = filterPriority(newArray);
-
-  return orderedTickets;
+function getDaily(tickets: Ticket[]): Ticket[] {
+  return tickets.filter((ticket) => ticket.category == TicketCategory.daily);
 }
 
 function getDelivery(tickets: Ticket[]) {
-  const newArray = tickets.filter(
-    (ticket) => ticket.category == TicketCategory.delivery
-  );
-
-  const orderedTicket = filterPriority(newArray);
-
-  return orderedTicket;
+  return tickets.filter((ticket) => ticket.category == TicketCategory.delivery);
 }
 
 function getBudget(tickets: Ticket[]) {
-  const newArray = tickets.filter(
-    (ticket) => ticket.category == TicketCategory.budget
-  );
-
-  const orderedTicket = filterPriority(newArray);
-
-  return orderedTicket;
+  return tickets.filter((ticket) => ticket.category == TicketCategory.budget);
 }
 
-function filterPriority(tickets: Ticket[]) {
-  const urgents = tickets.filter(
+function orderByPriority(tickets: Ticket[]): Ticket[] {
+  const urgent = tickets.filter(
     (ticket) => ticket.priority == TicketPriority.urgent
   );
 
-  const highs = tickets.filter(
+  const high = tickets.filter(
     (ticket) => ticket.priority == TicketPriority.high
   );
 
-  const mediums = tickets.filter(
+  const medium = tickets.filter(
     (ticket) => ticket.priority == TicketPriority.medium
   );
 
-  const lows = tickets.filter(
-    (ticket) => ticket.priority == TicketPriority.low
-  );
+  const low = tickets.filter((ticket) => ticket.priority == TicketPriority.low);
 
   const orderedTickets: Ticket[] = [];
 
-  lows.forEach((ticket) => orderedTickets.unshift(ticket));
-  mediums.forEach((ticket) => orderedTickets.unshift(ticket));
-  highs.forEach((ticket) => orderedTickets.unshift(ticket));
-  urgents.forEach((ticket) => orderedTickets.unshift(ticket));
-  return orderTickets;
+  low.forEach((ticket) => orderedTickets.unshift(ticket));
+  medium.forEach((ticket) => orderedTickets.unshift(ticket));
+  high.forEach((ticket) => orderedTickets.unshift(ticket));
+  urgent.forEach((ticket) => orderedTickets.unshift(ticket));
+
+  return orderedTickets;
 }
