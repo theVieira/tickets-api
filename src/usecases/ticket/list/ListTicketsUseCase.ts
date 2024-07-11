@@ -24,10 +24,10 @@ export class ListTicketsUseCase {
     if (
       checkPermission(Object.assign(this, jwt.permissions), "admin") === true
     ) {
-      return orderTickets(allTickets, order);
+      return orderTickets(this.filterPriority(allTickets), order);
     }
 
-    return orderTickets(openTickets, order);
+    return orderTickets(this.filterPriority(openTickets), order);
   }
 
   filterPriority(tickets: Ticket[]) {
