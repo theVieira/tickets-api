@@ -30,7 +30,7 @@ function getDaily(tickets: Ticket[]) {
 
   const orderedTickets = filterPriority(newArray);
 
-  return orderTickets;
+  return orderedTickets;
 }
 
 function getDelivery(tickets: Ticket[]) {
@@ -40,7 +40,7 @@ function getDelivery(tickets: Ticket[]) {
 
   const orderedTicket = filterPriority(newArray);
 
-  return orderTickets;
+  return orderedTicket;
 }
 
 function getBudget(tickets: Ticket[]) {
@@ -50,7 +50,7 @@ function getBudget(tickets: Ticket[]) {
 
   const orderedTicket = filterPriority(newArray);
 
-  return orderTickets;
+  return orderedTicket;
 }
 
 function filterPriority(tickets: Ticket[]) {
