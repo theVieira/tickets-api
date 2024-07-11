@@ -1,7 +1,10 @@
 import { Ticket } from "../../entities/ticket/Ticket";
-import { TicketCategory } from "../../entities/ticket/TicketProps";
+import {
+  TicketCategory,
+  TicketPriority,
+} from "../../entities/ticket/TicketProps";
 
-export async function orderTickets(
+export function orderTickets(
   tickets: Ticket[],
   order: "daily" | "delivery" | "budget" | "all"
 ) {
@@ -21,13 +24,57 @@ export async function orderTickets(
 }
 
 function getDaily(tickets: Ticket[]) {
-  return tickets.filter((ticket) => ticket.category == TicketCategory.daily);
+  const newArray = tickets.filter(
+    (ticket) => ticket.category == TicketCategory.daily
+  );
+
+  const orderedTickets = filterPriority(newArray);
+
+  return orderTickets;
 }
 
 function getDelivery(tickets: Ticket[]) {
-  return tickets.filter((ticket) => ticket.category == TicketCategory.delivery);
+  const newArray = tickets.filter(
+    (ticket) => ticket.category == TicketCategory.delivery
+  );
+
+  const orderedTicket = filterPriority(newArray);
+
+  return orderTickets;
 }
 
 function getBudget(tickets: Ticket[]) {
-  return tickets.filter((ticket) => ticket.category == TicketCategory.budget);
+  const newArray = tickets.filter(
+    (ticket) => ticket.category == TicketCategory.budget
+  );
+
+  const orderedTicket = filterPriority(newArray);
+
+  return orderTickets;
+}
+
+function filterPriority(tickets: Ticket[]) {
+  const urgents = tickets.filter(
+    (ticket) => ticket.priority == TicketPriority.urgent
+  );
+
+  const highs = tickets.filter(
+    (ticket) => ticket.priority == TicketPriority.high
+  );
+
+  const mediums = tickets.filter(
+    (ticket) => ticket.priority == TicketPriority.medium
+  );
+
+  const lows = tickets.filter(
+    (ticket) => ticket.priority == TicketPriority.low
+  );
+
+  const orderedTickets: Ticket[] = [];
+
+  lows.forEach((ticket) => orderedTickets.unshift(ticket));
+  mediums.forEach((ticket) => orderedTickets.unshift(ticket));
+  highs.forEach((ticket) => orderedTickets.unshift(ticket));
+  urgents.forEach((ticket) => orderedTickets.unshift(ticket));
+  return orderTickets;
 }
