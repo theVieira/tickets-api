@@ -44,7 +44,11 @@ export class ClientRepository implements IClientRepository {
   async list(): Promise<Client[]> {
     const data = await client_gateway.findMany({
       include: {
-        tickets: true,
+        tickets: {
+          include: {
+            tech: true,
+          },
+        },
       },
       orderBy: {
         name: "asc",
@@ -63,8 +67,9 @@ export class ClientRepository implements IClientRepository {
           ticket.id,
           MapTicketStatus(ticket.status),
           ticket.reccurrent,
-          ticket.techName || undefined,
-          ticket.createdAt
+          ticket.tech?.name,
+          ticket.createdAt,
+          ticket.tech?.color
         );
       });
 
