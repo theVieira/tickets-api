@@ -47,7 +47,7 @@ export class ClientRepository implements IClientRepository {
         tickets: true,
       },
       orderBy: {
-        createdAt: "asc",
+        name: "asc",
       },
     });
 
