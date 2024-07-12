@@ -17,6 +17,7 @@ export class Ticket {
   techName?: string;
   createdAt?: Date;
   techColor?: string;
+  updatedAt?: Date;
 
   constructor(
     props: TicketProps,
@@ -25,7 +26,8 @@ export class Ticket {
     reccurent?: boolean,
     techName?: string,
     createdAt?: Date,
-    techColor?: string
+    techColor?: string,
+    updatedAt?: Date
   ) {
     /* Optionals */
     this.id = uuid();
@@ -49,6 +51,9 @@ export class Ticket {
     }
     if (techColor) {
       this.techColor = techColor;
+    }
+    if (updatedAt) {
+      this.updatedAt = updatedAt;
     }
 
     this.category = props.category;

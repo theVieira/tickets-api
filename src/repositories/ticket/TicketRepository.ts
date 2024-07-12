@@ -62,7 +62,8 @@ export class TicketRepository implements ITicketRpository {
         ticket.reccurrent,
         ticket.techName || undefined,
         ticket.createdAt,
-        ticket.tech?.color
+        ticket.tech?.color,
+        ticket.updatedAt
       );
     });
   }
@@ -92,7 +93,7 @@ export class TicketRepository implements ITicketRpository {
       data.id,
       MapTicketStatus(data.status),
       data.reccurrent,
-      data.techName || undefined,
+      data.tech?.name,
       data.createdAt
     );
   }
