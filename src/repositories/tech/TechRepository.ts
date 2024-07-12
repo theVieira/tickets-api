@@ -59,7 +59,12 @@ export class TechRepository implements ITechRepository {
         createdAt: "asc",
       },
       include: {
-        tickets: true,
+        tickets: {
+          include: {
+            client: true,
+            tech: true,
+          },
+        },
       },
     });
 
@@ -86,7 +91,9 @@ export class TechRepository implements ITechRepository {
             ticket.id,
             MapTicketStatus(ticket.status),
             ticket.reccurrent,
-            ticket.techName || undefined
+            ticket.tech?.name,
+            ticket.createdAt,
+            ticket.tech?.color
           );
         })
       );
