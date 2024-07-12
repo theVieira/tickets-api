@@ -18,10 +18,10 @@ export class Client {
       this.tickets = tickets;
     }
 
-    this.name = this.formatName(props.name);
+    this.name = this.FormatName(props.name);
   }
 
-  formatName(name: string): string {
+  FormatName(name: string): string {
     const names = name.toLowerCase().split(" ");
 
     const formatNames = names.map((name) => {
