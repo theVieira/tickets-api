@@ -5,6 +5,7 @@ import { listTicketsController } from "../usecases/ticket/list";
 import { setProgressController } from "../usecases/ticket/setProgress";
 import { reOpenTicketController } from "../usecases/ticket/reopen";
 import { deleteTicketController } from "../usecases/ticket/delete";
+import { editDescriptionController } from "../usecases/ticket/editDescription";
 
 const ticketRoutes = Router();
 
@@ -30,6 +31,10 @@ ticketRoutes.put("/reopen", (req: Request, res: Response) => {
 
 ticketRoutes.delete("/delete", (req: Request, res: Response) => {
   deleteTicketController.handle(req, res);
+});
+
+ticketRoutes.put("/edit", (req: Request, res: Response) => {
+  editDescriptionController.handle(req, res);
 });
 
 export { ticketRoutes };

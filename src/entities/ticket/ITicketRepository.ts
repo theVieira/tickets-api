@@ -9,4 +9,5 @@ export interface ITicketRpository {
   setFinished(id: string, tech: Tech): Promise<Ticket>;
   setProgress(id: string, tech: Tech): Promise<Ticket>;
   reopen(id: string): Promise<Ticket>;
+  editDescription(id: string, description: string): Promise<Ticket>;
 }

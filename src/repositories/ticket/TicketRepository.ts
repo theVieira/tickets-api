@@ -208,4 +208,35 @@ export class TicketRepository implements ITicketRpository {
       data.createdAt
     );
   }
+
+  async editDescription(id: string, description: string): Promise<Ticket> {
+    const data = await ticket_gateway.update({
+      where: {
+        id,
+      },
+      data: {
+        description,
+      },
+      include: {
+        client: true,
+        tech: true,
+      },
+    });
+
+    return new Ticket(
+      {
+        category: MapTicketCategory(data.category),
+        clientName: data.client.name,
+        description: data.description,
+        priority: MapTicketPriority(data.priority),
+      },
+      data.id,
+      MapTicketStatus(data.status),
+      data.reccurrent,
+      data.tech?.name,
+      data.createdAt,
+      data.tech?.color,
+      data.updatedAt
+    );
+  }
 }
