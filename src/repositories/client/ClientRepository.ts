@@ -69,7 +69,8 @@ export class ClientRepository implements IClientRepository {
           ticket.reccurrent,
           ticket.tech?.name,
           ticket.createdAt,
-          ticket.tech?.color
+          ticket.tech?.color,
+          ticket.updatedAt
         );
       });
 

@@ -93,7 +93,8 @@ export class TechRepository implements ITechRepository {
             ticket.reccurrent,
             ticket.tech?.name,
             ticket.createdAt,
-            ticket.tech?.color
+            ticket.tech?.color,
+            ticket.updatedAt
           );
         })
       );
