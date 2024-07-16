@@ -5,7 +5,7 @@ import { listTicketsController } from "../usecases/ticket/list";
 import { setProgressController } from "../usecases/ticket/setProgress";
 import { reOpenTicketController } from "../usecases/ticket/reopen";
 import { deleteTicketController } from "../usecases/ticket/delete";
-import { editDescriptionController } from "../usecases/ticket/editDescription";
+import { editDescriptionController } from "../usecases/ticket/edit";
 
 const ticketRoutes = Router();
 

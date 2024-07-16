@@ -45,14 +45,14 @@ export class CreateTicketUseCase {
 
     const created = await this.ticketRepository.create(ticket);
 
-    await bot.telegram.sendMessage(
+    /* await bot.telegram.sendMessage(
       CHAT_ID,
       `Novo chamado criado\nCliente: ${ticket.clientName}\nDescrição: ${
         ticket.description
       }\nPrioridade: ${Translate(ticket.priority)}\nCategoria: ${Translate(
         ticket.category
       )}`
-    );
+    ); */
 
     return created;
   }

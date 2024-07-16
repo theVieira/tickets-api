@@ -1,5 +1,6 @@
 import { Tech } from "../tech/Tech";
 import { Ticket } from "./Ticket";
+import { TicketCategory } from "./TicketProps";
 
 export interface ITicketRpository {
   findById(id: string): Promise<Ticket>;
@@ -9,5 +10,9 @@ export interface ITicketRpository {
   setFinished(id: string, tech: Tech): Promise<Ticket>;
   setProgress(id: string, tech: Tech): Promise<Ticket>;
   reopen(id: string): Promise<Ticket>;
-  editDescription(id: string, description: string): Promise<Ticket>;
+  editTicket(
+    id: string,
+    description: string,
+    category: TicketCategory
+  ): Promise<Ticket>;
 }

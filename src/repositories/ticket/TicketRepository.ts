@@ -1,6 +1,7 @@
 import { Tech } from "../../entities/tech/Tech";
 import { ITicketRpository } from "../../entities/ticket/ITicketRepository";
 import { Ticket } from "../../entities/ticket/Ticket";
+import { TicketCategory } from "../../entities/ticket/TicketProps";
 import { ticket_gateway } from "../../services/database/prisma";
 import { MapTicketCategory } from "../../services/utils/MapTicketCategory";
 import { MapTicketPriority } from "../../services/utils/MapTicketPriority";
@@ -209,13 +210,18 @@ export class TicketRepository implements ITicketRpository {
     );
   }
 
-  async editDescription(id: string, description: string): Promise<Ticket> {
+  async editTicket(
+    id: string,
+    description: string,
+    category: TicketCategory
+  ): Promise<Ticket> {
     const data = await ticket_gateway.update({
       where: {
         id,
       },
       data: {
         description,
+        category,
       },
       include: {
         client: true,

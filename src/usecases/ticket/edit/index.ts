@@ -1,6 +1,6 @@
 import { TicketRepository } from "../../../repositories/ticket/TicketRepository";
-import { EditDescriptionController } from "./EditDescriptionController";
-import { EditDescriptionUseCase } from "./EditDescriptionUseCase";
+import { EditDescriptionController } from "./EditTicketController";
+import { EditDescriptionUseCase } from "./EditTicketUseCase";
 
 const repository = new TicketRepository();
 const usecase = new EditDescriptionUseCase(repository);
