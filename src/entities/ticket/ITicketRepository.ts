@@ -1,3 +1,4 @@
+import { TicketStatus } from "@prisma/client";
 import { Tech } from "../tech/Tech";
 import { Ticket } from "./Ticket";
 import { TicketCategory } from "./TicketProps";
@@ -13,6 +14,8 @@ export interface ITicketRpository {
   editTicket(
     id: string,
     description: string,
-    category: TicketCategory
+    category: TicketCategory,
+    status: TicketStatus,
+    techName?: string
   ): Promise<Ticket>;
 }

@@ -20,15 +20,31 @@ export class EditDescriptionUseCase {
   ): Promise<Ticket> {
     const { permissions } = verify(token, SECRET) as IPayload;
 
-    if (checkPermission(permissions, "admin") == true) {
+    if (checkPermission(permissions, "admin") == false) {
+      throw new Error("ForbiddenError");
+    }
+
+    const findTicket = await this.ticketRepository.findById(id);
+
+    if (findTicket.category != category) {
       const ticket = await this.ticketRepository.editTicket(
         id,
         description,
-        category
+        category,
+        "open",
+        findTicket.techName
       );
+
       return ticket;
-    } else {
-      throw new Error("ForbiddenError");
     }
+
+    const ticket = await this.ticketRepository.editTicket(
+      id,
+      description,
+      category,
+      findTicket.status,
+      findTicket.techName
+    );
+    return ticket;
   }
 }
