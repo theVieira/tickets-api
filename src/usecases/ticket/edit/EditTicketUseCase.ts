@@ -32,7 +32,7 @@ export class EditDescriptionUseCase {
         description,
         category,
         "open",
-        findTicket.techName
+        undefined
       );
 
       return ticket;
