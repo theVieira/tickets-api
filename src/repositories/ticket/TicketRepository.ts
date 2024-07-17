@@ -1,7 +1,10 @@
 import { Tech } from "../../entities/tech/Tech";
 import { ITicketRpository } from "../../entities/ticket/ITicketRepository";
 import { Ticket } from "../../entities/ticket/Ticket";
-import { TicketCategory } from "../../entities/ticket/TicketProps";
+import {
+  TicketCategory,
+  TicketStatus,
+} from "../../entities/ticket/TicketProps";
 import { ticket_gateway } from "../../services/database/prisma";
 import { MapTicketCategory } from "../../services/utils/MapTicketCategory";
 import { MapTicketPriority } from "../../services/utils/MapTicketPriority";
@@ -213,7 +216,9 @@ export class TicketRepository implements ITicketRpository {
   async editTicket(
     id: string,
     description: string,
-    category: TicketCategory
+    category: TicketCategory,
+    status: TicketStatus,
+    techName?: string
   ): Promise<Ticket> {
     const data = await ticket_gateway.update({
       where: {
@@ -222,6 +227,8 @@ export class TicketRepository implements ITicketRpository {
       data: {
         description,
         category,
+        status,
+        techName,
       },
       include: {
         client: true,
