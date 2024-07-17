@@ -36,15 +36,15 @@ export class EditDescriptionUseCase {
       );
 
       return ticket;
+    } else {
+      const ticket = await this.ticketRepository.editTicket(
+        id,
+        description,
+        category,
+        findTicket.status,
+        findTicket.techName
+      );
+      return ticket;
     }
-
-    const ticket = await this.ticketRepository.editTicket(
-      id,
-      description,
-      category,
-      findTicket.status,
-      findTicket.techName
-    );
-    return ticket;
   }
 }
