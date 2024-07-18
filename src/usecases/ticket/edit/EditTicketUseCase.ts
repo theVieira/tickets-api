@@ -26,7 +26,7 @@ export class EditDescriptionUseCase {
 
     const findTicket = await this.ticketRepository.findById(id);
 
-    if (findTicket.category == category) {
+    if (findTicket.category === category) {
       const ticket = await this.ticketRepository.editTicket(
         id,
         description,
@@ -34,8 +34,9 @@ export class EditDescriptionUseCase {
         findTicket.status,
         findTicket.techName
       );
+
       return ticket;
-    } else {
+    } else if (findTicket.category !== category) {
       const ticket = await this.ticketRepository.editTicket(
         id,
         description,
@@ -45,6 +46,8 @@ export class EditDescriptionUseCase {
       );
 
       return ticket;
+    } else {
+      throw new Error("UnknowError");
     }
   }
 }
