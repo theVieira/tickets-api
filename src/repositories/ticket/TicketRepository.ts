@@ -218,8 +218,8 @@ export class TicketRepository implements ITicketRpository {
     description: string,
     category: TicketCategory,
     status: TicketStatus,
-    techName?: string
-  ): Promise<Ticket> {
+    techName?: string | null
+  ) {
     const data = await ticket_gateway.update({
       where: {
         id,
@@ -246,7 +246,7 @@ export class TicketRepository implements ITicketRpository {
       data.id,
       MapTicketStatus(data.status),
       data.reccurrent,
-      data.tech?.name,
+      data.techName || undefined,
       data.createdAt,
       data.tech?.color,
       data.updatedAt

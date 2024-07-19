@@ -16,6 +16,6 @@ export interface ITicketRpository {
     description: string,
     category: TicketCategory,
     status: TicketStatus,
-    techName?: string
+    techName?: string | null
   ): Promise<Ticket>;
 }
