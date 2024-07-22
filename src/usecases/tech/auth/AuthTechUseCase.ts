@@ -3,6 +3,7 @@ import { ITechRepository } from "../../../entities/tech/ITechRepository";
 import { config } from "dotenv";
 import { compare } from "bcrypt";
 import { Tech } from "../../../entities/tech/Tech";
+import { TechStatus } from "../../../entities/tech/TechProps";
 
 config();
 const SECRET = process.env.SECRET_KEY ?? "";
@@ -11,8 +12,12 @@ export class AuthTechUseCase {
   constructor(private techRepository: ITechRepository) {}
 
   async execute(name: string, password: string): Promise<Tech> {
-    const formattedName = name.toString().toLowerCase()
+    const formattedName = name.toString().toLowerCase();
     const tech = await this.techRepository.auth(formattedName);
+
+    if (tech.status != TechStatus.active) {
+      throw new Error("tech inactive");
+    }
 
     const verify = await compare(password, tech.password.toString());
 
