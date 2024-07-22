@@ -6,6 +6,7 @@ export class Tech {
   id: string;
   name: string;
   password: string;
+  phone: string;
   admin: boolean;
   create_ticket: boolean;
   delete_ticket: boolean;
@@ -39,6 +40,7 @@ export class Tech {
     this.name = props.name.toLowerCase();
     this.password = props.password;
     this.admin = props.admin;
+    this.phone = props.phone;
     this.create_ticket = props.create_ticket;
     this.delete_ticket = props.delete_ticket;
     this.color = props.color.toUpperCase();

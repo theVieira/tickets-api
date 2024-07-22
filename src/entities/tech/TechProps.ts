@@ -1,6 +1,7 @@
 export type TechProps = {
   name: string;
   password: string;
+  phone: string;
   admin: boolean;
   create_ticket: boolean;
   delete_ticket: boolean;

@@ -33,13 +33,17 @@ model Ticket {
   techName    String? 
   tech        Tech?           @relation(fields: [techName], references: [name])
   createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  progress    DateTime?
+  finished    DateTime?
+  report      String?
+
 }
 
 model Tech {
   id            String    @unique
   name          String    @unique
   password      String
+  phone         String
   admin         Boolean
   create_ticket Boolean
   delete_ticket Boolean
