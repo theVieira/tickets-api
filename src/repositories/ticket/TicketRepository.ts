@@ -158,7 +158,7 @@ export class TicketRepository implements ITicketRpository {
       data: {
         status: "open",
         reccurrent: true,
-        techName: undefined,
+        techName: null,
         tech: undefined,
       },
       include: {
