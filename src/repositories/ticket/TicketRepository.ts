@@ -37,7 +37,7 @@ export class TicketRepository implements ITicketRpository {
       data.id,
       MapTicketStatus(data.status),
       data.reccurrent,
-      data.techName || undefined,
+      data.techName ?? undefined,
       data.createdAt
     );
   }
@@ -64,15 +64,22 @@ export class TicketRepository implements ITicketRpository {
         ticket.id,
         MapTicketStatus(ticket.status),
         ticket.reccurrent,
-        ticket.techName || undefined,
+        ticket.techName ?? undefined,
         ticket.createdAt,
         ticket.tech?.color,
-        ticket.updatedAt
+        ticket.progress ?? undefined,
+        ticket.finished ?? undefined,
+        ticket.report ?? undefined
       );
     });
   }
 
-  async setFinished(id: string, tech: Tech): Promise<Ticket> {
+  async setFinished(
+    id: string,
+    tech: Tech,
+    report: string,
+    date: Date
+  ): Promise<Ticket> {
     const data = await ticket_gateway.update({
       where: {
         id,
@@ -80,6 +87,8 @@ export class TicketRepository implements ITicketRpository {
       data: {
         status: "finished",
         techName: tech.name,
+        finished: date,
+        report,
       },
       include: {
         client: true,
@@ -98,11 +107,15 @@ export class TicketRepository implements ITicketRpository {
       MapTicketStatus(data.status),
       data.reccurrent,
       data.tech?.name,
-      data.createdAt
+      data.createdAt,
+      data.tech?.color,
+      data.progress ?? undefined,
+      data.finished ?? undefined,
+      data.report ?? undefined
     );
   }
 
-  async setProgress(id: string, tech: Tech): Promise<Ticket> {
+  async setProgress(id: string, tech: Tech, date: Date): Promise<Ticket> {
     const data = await ticket_gateway.update({
       where: {
         id,
@@ -110,6 +123,7 @@ export class TicketRepository implements ITicketRpository {
       data: {
         status: "progress",
         techName: tech.name,
+        progress: date,
       },
       include: {
         client: true,
@@ -127,8 +141,12 @@ export class TicketRepository implements ITicketRpository {
       data.id,
       MapTicketStatus(data.status),
       data.reccurrent,
-      data.techName || undefined,
-      data.createdAt
+      data.techName ?? undefined,
+      data.createdAt,
+      data.tech?.color,
+      data.progress ?? undefined,
+      data.finished ?? undefined,
+      data.report ?? undefined
     );
   }
 
@@ -159,8 +177,12 @@ export class TicketRepository implements ITicketRpository {
       data.id,
       MapTicketStatus(data.status),
       data.reccurrent,
-      data.techName || undefined,
-      data.createdAt
+      data.techName ?? undefined,
+      data.createdAt,
+      data.tech?.color,
+      data.progress ?? undefined,
+      data.finished ?? undefined,
+      data.report ?? undefined
     );
   }
 
@@ -186,8 +208,12 @@ export class TicketRepository implements ITicketRpository {
       data.id,
       MapTicketStatus(data.status),
       data.reccurrent,
-      data.techName || undefined,
-      data.createdAt
+      data.techName ?? undefined,
+      data.createdAt,
+      data.tech?.color,
+      data.progress ?? undefined,
+      data.finished ?? undefined,
+      data.report ?? undefined
     );
   }
 
@@ -246,10 +272,12 @@ export class TicketRepository implements ITicketRpository {
       data.id,
       MapTicketStatus(data.status),
       data.reccurrent,
-      data.techName || undefined,
+      data.techName ?? undefined,
       data.createdAt,
       data.tech?.color,
-      data.updatedAt
+      data.progress ?? undefined,
+      data.finished ?? undefined,
+      data.report ?? undefined
     );
   }
 }

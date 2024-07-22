@@ -8,8 +8,13 @@ export interface ITicketRpository {
   create(ticket: Ticket): Promise<Ticket>;
   list(): Promise<Ticket[]>;
   delete(id: string): Promise<Ticket>;
-  setFinished(id: string, tech: Tech): Promise<Ticket>;
-  setProgress(id: string, tech: Tech): Promise<Ticket>;
+  setFinished(
+    id: string,
+    tech: Tech,
+    report: string,
+    date: Date
+  ): Promise<Ticket>;
+  setProgress(id: string, tech: Tech, date: Date): Promise<Ticket>;
   reopen(id: string): Promise<Ticket>;
   editTicket(
     id: string,

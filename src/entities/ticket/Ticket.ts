@@ -17,7 +17,9 @@ export class Ticket {
   techName?: string;
   createdAt?: Date;
   techColor?: string;
-  updatedAt?: Date;
+  report?: string;
+  progress?: Date;
+  finished?: Date;
 
   constructor(
     props: TicketProps,
@@ -27,7 +29,9 @@ export class Ticket {
     techName?: string,
     createdAt?: Date,
     techColor?: string,
-    updatedAt?: Date
+    progress?: Date,
+    finished?: Date,
+    report?: string
   ) {
     /* Optionals */
     this.id = uuid();
@@ -52,8 +56,20 @@ export class Ticket {
     if (techColor) {
       this.techColor = techColor;
     }
-    if (updatedAt) {
-      this.updatedAt = updatedAt;
+    if (progress) {
+      this.progress = progress;
+    }
+    if (finished) {
+      this.finished = finished;
+    }
+    if (report) {
+      if (report.length > 300) {
+        throw new Error("char over limit");
+      }
+      this.report = report;
+    }
+    if (props.description.length > 300) {
+      throw new Error("char over limit");
     }
 
     this.category = props.category;
