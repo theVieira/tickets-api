@@ -6,14 +6,15 @@ export class SetFinishedController {
   constructor(private updateTicketStatusUseCase: SetFinishedUseCase) {}
 
   async handle(req: Request, res: Response) {
-    const { id, techName } = req.body;
+    const { id, techName, report } = req.body;
 
     try {
       const token = getToken(req);
       const ticket = await this.updateTicketStatusUseCase.execute(
         id,
+        techName,
         token,
-        techName
+        report
       );
       return res.status(200).json(ticket);
     } catch (error) {

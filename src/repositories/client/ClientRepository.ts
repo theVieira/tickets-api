@@ -70,7 +70,9 @@ export class ClientRepository implements IClientRepository {
           ticket.tech?.name,
           ticket.createdAt,
           ticket.tech?.color,
-          ticket.updatedAt
+          ticket.progress ?? undefined,
+          ticket.finished ?? undefined,
+          ticket.report ?? undefined
         );
       });
 
@@ -86,7 +88,11 @@ export class ClientRepository implements IClientRepository {
         name,
       },
       include: {
-        tickets: true,
+        tickets: {
+          include: {
+            tech: true,
+          },
+        },
       },
     });
 
@@ -107,7 +113,11 @@ export class ClientRepository implements IClientRepository {
           MapTicketStatus(ticket.status),
           ticket.reccurrent,
           ticket.techName || undefined,
-          ticket.createdAt
+          ticket.createdAt,
+          ticket.tech?.color,
+          ticket.progress ?? undefined,
+          ticket.finished ?? undefined,
+          ticket.report ?? undefined
         );
       })
     );

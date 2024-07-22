@@ -19,6 +19,7 @@ export class TechRepository implements ITechRepository {
         name: tech.name,
         password: tech.password,
         status: tech.status,
+        phone: tech.phone,
       },
       include: {
         tickets: true,
@@ -33,6 +34,7 @@ export class TechRepository implements ITechRepository {
         delete_ticket: data.delete_ticket,
         name: data.name,
         password: data.password,
+        phone: data.phone,
       },
       data.id,
       MapTechStatus(data.status),
@@ -47,7 +49,7 @@ export class TechRepository implements ITechRepository {
           ticket.id,
           MapTicketStatus(ticket.status),
           ticket.reccurrent,
-          ticket.techName || undefined
+          ticket.techName ?? undefined
         );
       })
     );
@@ -77,6 +79,7 @@ export class TechRepository implements ITechRepository {
           delete_ticket: tech.delete_ticket,
           name: tech.name,
           password: tech.password,
+          phone: tech.phone,
         },
         tech.id,
         MapTechStatus(tech.status),
@@ -94,7 +97,8 @@ export class TechRepository implements ITechRepository {
             ticket.tech?.name,
             ticket.createdAt,
             ticket.tech?.color,
-            ticket.updatedAt
+            ticket.progress ?? undefined,
+            ticket.finished ?? undefined
           );
         })
       );
@@ -126,6 +130,7 @@ export class TechRepository implements ITechRepository {
         delete_ticket: data.delete_ticket,
         name: data.name,
         password: data.password,
+        phone: data.phone,
       },
       data.id,
       MapTechStatus(data.status),
@@ -140,8 +145,12 @@ export class TechRepository implements ITechRepository {
           ticket.id,
           MapTicketStatus(ticket.status),
           ticket.reccurrent,
-          ticket.techName || undefined,
-          ticket.createdAt
+          ticket.techName ?? undefined,
+          ticket.createdAt,
+          data.color,
+          ticket.progress ?? undefined,
+          ticket.finished ?? undefined,
+          ticket.report ?? undefined
         );
       })
     );
@@ -170,6 +179,7 @@ export class TechRepository implements ITechRepository {
         delete_ticket: data.delete_ticket,
         name: data.name,
         password: data.password,
+        phone: data.phone,
       },
       data.id,
       MapTechStatus(data.status),
@@ -184,8 +194,12 @@ export class TechRepository implements ITechRepository {
           ticket.id,
           MapTicketStatus(ticket.status),
           ticket.reccurrent,
-          ticket.techName || undefined,
-          ticket.createdAt
+          ticket.techName ?? undefined,
+          ticket.createdAt,
+          data.color,
+          ticket.progress ?? undefined,
+          ticket.finished ?? undefined,
+          ticket.report ?? undefined
         );
       })
     );
@@ -214,6 +228,7 @@ export class TechRepository implements ITechRepository {
         delete_ticket: data.delete_ticket,
         name: data.name,
         password: data.password,
+        phone: data.phone,
       },
       data.id,
       MapTechStatus(data.status),
@@ -228,8 +243,12 @@ export class TechRepository implements ITechRepository {
           ticket.id,
           MapTicketStatus(ticket.status),
           ticket.reccurrent,
-          ticket.techName || undefined,
-          ticket.createdAt
+          ticket.techName ?? undefined,
+          ticket.createdAt,
+          data.color,
+          ticket.progress ?? undefined,
+          ticket.finished ?? undefined,
+          ticket.report ?? undefined
         );
       })
     );
@@ -269,7 +288,10 @@ export class TechRepository implements ITechRepository {
           ticket.reccurrent,
           ticket.tech?.name,
           ticket.createdAt,
-          ticket.tech?.color
+          ticket.tech?.color,
+          ticket.progress ?? undefined,
+          ticket.finished ?? undefined,
+          ticket.report ?? undefined
         );
       })
     );
