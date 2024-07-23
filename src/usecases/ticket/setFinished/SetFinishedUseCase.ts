@@ -19,6 +19,10 @@ export class SetFinishedUseCase {
     const techRepository = new TechRepository();
     const tech = await techRepository.findByName(techName);
 
+    if (!report) {
+      throw new Error("report must be passed");
+    }
+
     const ticket = await this.ticketRepository.setFinished(
       id,
       tech,
