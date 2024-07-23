@@ -36,6 +36,7 @@ model Ticket {
   progress    DateTime?
   finished    DateTime?
   report      String?
+  note        String?
 
 }
 

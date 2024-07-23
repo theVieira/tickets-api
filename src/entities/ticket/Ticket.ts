@@ -20,6 +20,7 @@ export class Ticket {
   report?: string;
   progress?: Date;
   finished?: Date;
+  note?: string;
 
   constructor(
     props: TicketProps,
@@ -31,7 +32,8 @@ export class Ticket {
     techColor?: string,
     progress?: Date,
     finished?: Date,
-    report?: string
+    report?: string,
+    note?: string
   ) {
     /* Optionals */
     this.id = uuid();
@@ -61,6 +63,9 @@ export class Ticket {
     }
     if (finished) {
       this.finished = finished;
+    }
+    if (note) {
+      this.note = note;
     }
     if (report) {
       if (report.length > 300) {

@@ -23,4 +23,5 @@ export interface ITicketRpository {
     status: TicketStatus,
     techName?: string | null
   ): Promise<Ticket>;
+  addNote(id: string, note: string): Promise<Ticket>;
 }
