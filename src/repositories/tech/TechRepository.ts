@@ -22,7 +22,9 @@ export class TechRepository implements ITechRepository {
         phone: tech.phone,
       },
       include: {
-        tickets: true,
+        tickets: {
+          include: { tech: true },
+        },
       },
     });
 
@@ -49,7 +51,13 @@ export class TechRepository implements ITechRepository {
           ticket.id,
           MapTicketStatus(ticket.status),
           ticket.reccurrent,
-          ticket.techName ?? undefined
+          ticket.techName ?? undefined,
+          ticket.createdAt,
+          ticket.tech?.color,
+          ticket.progress ?? undefined,
+          ticket.finished ?? undefined,
+          ticket.report ?? undefined,
+          ticket.note ?? undefined
         );
       })
     );
@@ -98,7 +106,9 @@ export class TechRepository implements ITechRepository {
             ticket.createdAt,
             ticket.tech?.color,
             ticket.progress ?? undefined,
-            ticket.finished ?? undefined
+            ticket.finished ?? undefined,
+            ticket.report ?? undefined,
+            ticket.note ?? undefined
           );
         })
       );
@@ -150,7 +160,8 @@ export class TechRepository implements ITechRepository {
           data.color,
           ticket.progress ?? undefined,
           ticket.finished ?? undefined,
-          ticket.report ?? undefined
+          ticket.report ?? undefined,
+          ticket.note ?? undefined
         );
       })
     );
@@ -199,7 +210,8 @@ export class TechRepository implements ITechRepository {
           data.color,
           ticket.progress ?? undefined,
           ticket.finished ?? undefined,
-          ticket.report ?? undefined
+          ticket.report ?? undefined,
+          ticket.note ?? undefined
         );
       })
     );
@@ -248,7 +260,8 @@ export class TechRepository implements ITechRepository {
           data.color,
           ticket.progress ?? undefined,
           ticket.finished ?? undefined,
-          ticket.report ?? undefined
+          ticket.report ?? undefined,
+          ticket.note ?? undefined
         );
       })
     );
@@ -291,7 +304,8 @@ export class TechRepository implements ITechRepository {
           ticket.tech?.color,
           ticket.progress ?? undefined,
           ticket.finished ?? undefined,
-          ticket.report ?? undefined
+          ticket.report ?? undefined,
+          ticket.note ?? undefined
         );
       })
     );

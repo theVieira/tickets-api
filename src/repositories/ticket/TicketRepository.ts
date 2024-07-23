@@ -69,7 +69,8 @@ export class TicketRepository implements ITicketRpository {
         ticket.tech?.color,
         ticket.progress ?? undefined,
         ticket.finished ?? undefined,
-        ticket.report ?? undefined
+        ticket.report ?? undefined,
+        ticket.note ?? undefined
       );
     });
   }
@@ -111,7 +112,8 @@ export class TicketRepository implements ITicketRpository {
       data.tech?.color,
       data.progress ?? undefined,
       data.finished ?? undefined,
-      data.report ?? undefined
+      data.report ?? undefined,
+      data.note ?? undefined
     );
   }
 
@@ -146,7 +148,8 @@ export class TicketRepository implements ITicketRpository {
       data.tech?.color,
       data.progress ?? undefined,
       data.finished ?? undefined,
-      data.report ?? undefined
+      data.report ?? undefined,
+      data.note ?? undefined
     );
   }
 
@@ -182,7 +185,8 @@ export class TicketRepository implements ITicketRpository {
       data.tech?.color,
       data.progress ?? undefined,
       data.finished ?? undefined,
-      data.report ?? undefined
+      data.report ?? undefined,
+      data.note ?? undefined
     );
   }
 
@@ -213,7 +217,8 @@ export class TicketRepository implements ITicketRpository {
       data.tech?.color,
       data.progress ?? undefined,
       data.finished ?? undefined,
-      data.report ?? undefined
+      data.report ?? undefined,
+      data.note ?? undefined
     );
   }
 
@@ -277,7 +282,8 @@ export class TicketRepository implements ITicketRpository {
       data.tech?.color,
       data.progress ?? undefined,
       data.finished ?? undefined,
-      data.report ?? undefined
+      data.report ?? undefined,
+      data.note ?? undefined
     );
   }
 
