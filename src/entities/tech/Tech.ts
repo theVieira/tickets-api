@@ -40,9 +40,16 @@ export class Tech {
     this.name = props.name.toLowerCase();
     this.password = props.password;
     this.admin = props.admin;
-    this.phone = props.phone;
+    this.phone = this.formatPhone(props.phone);
     this.create_ticket = props.create_ticket;
     this.delete_ticket = props.delete_ticket;
     this.color = props.color.toUpperCase();
+  }
+
+  formatPhone(phone: string): string {
+    const formatted: string = phone.replace(/\D/g, "");
+    const newPhone: string = "+" + formatted;
+
+    return newPhone;
   }
 }
