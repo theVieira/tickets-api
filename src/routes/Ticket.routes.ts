@@ -7,6 +7,7 @@ import { reOpenTicketController } from "../usecases/ticket/reopen";
 import { deleteTicketController } from "../usecases/ticket/delete";
 import { editDescriptionController } from "../usecases/ticket/edit";
 import { addNoteController } from "../usecases/ticket/addNote";
+import { openTicketController } from "../usecases/ticket/open";
 
 const ticketRoutes = Router();
 
@@ -40,6 +41,10 @@ ticketRoutes.put("/edit", (req: Request, res: Response) => {
 
 ticketRoutes.put("/addNote", (req: Request, res: Response) => {
   addNoteController.handle(req, res);
+});
+
+ticketRoutes.put("/open", (req: Request, res: Response) => {
+  openTicketController.handle(req, res);
 });
 
 export { ticketRoutes };
