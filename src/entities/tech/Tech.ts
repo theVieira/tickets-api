@@ -21,9 +21,9 @@ export class Tech {
     status?: TechStatus,
     tickets?: Ticket[]
   ) {
-    /* Optionals */
     this.id = uuid();
     this.status = TechStatus.active;
+
     if (id) {
       this.id = id;
     }
@@ -36,6 +36,7 @@ export class Tech {
 
     if (props.name.length > 30) throw Error("name char limit over!");
     if (props.color.length > 15) throw Error("color char limit over!");
+    if (props.phone.length > 20) throw Error("phone char limit over!");
 
     this.name = props.name.toLowerCase();
     this.password = props.password;
@@ -48,8 +49,6 @@ export class Tech {
 
   formatPhone(phone: string): string {
     const formatted: string = phone.replace(/\D/g, "");
-    const newPhone: string = "+" + formatted;
-
-    return newPhone;
+    return formatted;
   }
 }
