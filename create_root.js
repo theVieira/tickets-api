@@ -35,7 +35,7 @@ const create = async () => {
       admin: true,
       create_ticket: true,
       delete_ticket: true,
-      phone: "+55 (00) 00000-0000",
+      phone: "(00) 00000-0000",
       color: "#CECECE",
     }),
   });
