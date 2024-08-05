@@ -28,11 +28,9 @@ export class CreateTicketUseCase {
     const { permissions } = verify(token, SECRET) as IPayload;
 
     if (
-      checkPermission(
-        Object.assign(this, permissions),
-        // eslint-disable-next-line no-constant-binary-expression
-        "admin" || "create_ticket"
-      ) === false
+      checkPermission(Object.assign(this, permissions), "admin") === false &&
+      checkPermission(Object.assign(this, permissions), "create_ticket") ===
+        false
     ) {
       throw new Error("ForbiddenError");
     }
