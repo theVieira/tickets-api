@@ -37,7 +37,7 @@ async function checkStatus() {
 		const timeProgress = new Date(el.progress)
 		const timeDiff = now.getTime() - timeProgress.getTime()
 		const diffInHours = Math.floor(timeDiff / (1000 * 60 * 60))
-		if (diffInHours == 0) {
+		if (diffInHours >= 24) {
 			const res = await fetch(baseUrl + '/ticket/open', {
 				headers: {
 					authorization: `Bearer ${token}`,
@@ -58,4 +58,4 @@ async function checkStatus() {
 	})
 }
 
-setTimeout(() => checkStatus(), 1000 * 10)
+setTimeout(() => checkStatus(), 1000 * 60 * 60 * 24)
