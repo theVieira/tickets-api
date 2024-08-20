@@ -19,7 +19,6 @@ export class AddNoteUseCase {
 
 		if (find.note == undefined) {
 			const ticket = await this.ticketRepository.addNote(id, formatNote)
-			console.log(ticket)
 			return ticket
 		} else {
 			const ticket = await this.ticketRepository.addNote(
