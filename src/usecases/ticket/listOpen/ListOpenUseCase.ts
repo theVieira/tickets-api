@@ -16,7 +16,7 @@ export class ListOpenUseCase {
 		const allTickets: Ticket[] = await this.ticketRepository.list()
 
 		const openTickets: Ticket[] = allTickets.filter((ticket) => {
-			if (ticket.status === TicketStatus.open) return ticket
+			if (ticket.status !== TicketStatus.finished) return ticket
 		})
 
 		return orderTickets(openTickets, order)
