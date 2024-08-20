@@ -13,7 +13,7 @@ export class AddNoteUseCase {
 			throw new Error('char limit over (max 500)')
 		}
 
-		const formatNote = `Técnico: ${techName}\n=> ${note}\n`
+		const formatNote = `\n🧑 ${techName}\n💬 ${note}\n`
 
 		const find = await this.ticketRepository.findById(id)
 
