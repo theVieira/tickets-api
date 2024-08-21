@@ -13,7 +13,14 @@ export class AddNoteUseCase {
 			throw new Error('char limit over (max 500)')
 		}
 
-		const formatNote = `\n🧑 ${techName}\n💬 ${note}\n`
+		const dateFormat = `${new Date().getUTCDate()}/${(new Date().getUTCMonth() + 1)
+			.toString()
+			.padStart(2, '0')}/${new Date().getUTCFullYear()} ${
+			new Date().getUTCHours() - 4
+		}:${new Date().getUTCMinutes()}`
+		console.log(dateFormat)
+
+		const formatNote = `\n🧑 ${techName}\n⏰ ${dateFormat}\n💬 ${note}\n`
 
 		const find = await this.ticketRepository.findById(id)
 
