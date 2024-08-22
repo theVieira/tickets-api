@@ -15,7 +15,7 @@ export class ListFinishedUseCase {
 
 		if (permissions.admin !== true) throw new Error('ForbiddenError')
 
-		const allTickets: Ticket[] = await this.ticketRepository.list()
+		const allTickets: Ticket[] = (await this.ticketRepository.list()).reverse()
 
 		const finishedTickets: Ticket[] = allTickets.filter(
 			(ticket) => ticket.status === TicketStatus.finished
