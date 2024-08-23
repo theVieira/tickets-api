@@ -37,25 +37,28 @@ async function checkStatus() {
 		const timeProgress = new Date(el.progress)
 		const timeDiff = now.getTime() - timeProgress.getTime()
 		const diffInHours = Math.floor(timeDiff / (1000 * 60 * 60))
-		if (diffInHours >= 24) {
-			const res = await fetch(baseUrl + '/ticket/open', {
-				headers: {
-					authorization: `Bearer ${token}`,
-					'Content-Type': 'application/json',
-				},
-				method: 'PUT',
-				body: JSON.stringify({
-					id: el.id,
-				}),
-			})
 
-			const data = await res.json()
+		if (diffInHours <= 24) return
 
-			exec(
-				`echo '**Ticket time for finish expired** \nTicket reopen: \nId: ${data.id} \nClient: ${data.clientName} \nDescrição: ${data.description} \n' >> status.log`
-			)
-		}
+		const res = await fetch(baseUrl + '/ticket/open', {
+			headers: {
+				authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+			method: 'PUT',
+			body: JSON.stringify({
+				id: el.id,
+			}),
+		})
+
+		const data = await res.json()
+
+		console.log(data)
+
+		exec(
+			`echo '**Ticket time for finish expired** \nTicket reopen: \nId: ${data.id} \nClient: ${data.clientName} \nDescrição: ${data.description} \n' >> status.log`
+		)
 	})
 }
 
-setTimeout(() => checkStatus(), 1000 * 60 * 60 * 24)
+setTimeout(() => checkStatus(), 1000 * 60 * 60 * 4) // exec every 4h
