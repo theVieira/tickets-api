@@ -18,7 +18,6 @@ export class AddNoteUseCase {
 			.padStart(2, '0')}/${new Date().getUTCFullYear()} ${
 			new Date().getUTCHours() - 4
 		}:${new Date().getUTCMinutes()}`
-		console.log(dateFormat)
 
 		const formatNote = `\n🧑 ${techName}\n⏰ ${dateFormat}\n💬 ${note}\n`
 
