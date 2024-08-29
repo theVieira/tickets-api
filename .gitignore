@@ -4,3 +4,4 @@ dist/
 .env
 prisma/migrations/
 status.log
+access.log
