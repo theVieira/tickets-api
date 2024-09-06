@@ -55,8 +55,13 @@ async function checkStatus() {
 
 		console.log(data)
 
+		const date = new Date()
+		const formattedDate = date.getDate().toString().padStart(2, '0')
+		const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0')
+		const formatted = `${formattedDate}/${formattedMonth}/${date.getFullYear()}`
+
 		exec(
-			`echo '**Ticket time for finish expired** \nTicket reopen: \nId: ${data.id} \nClient: ${data.clientName} \nDescrição: ${data.description} \n' >> status.log`
+			`echo '**Ticket time for finish expired** \n${formatted} \nTicket reopen: \nId: ${data.id} \nClient: ${data.clientName} \nDescrição: ${data.description} \n' >> status.log`
 		)
 	})
 }
