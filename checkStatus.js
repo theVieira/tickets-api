@@ -43,9 +43,9 @@ async function checkStatus() {
 	data.forEach(async (el) => {
 		const timeProgress = new Date(el.progress)
 		const timeDiff = now.getTime() - timeProgress.getTime()
-		const diffInHours = Math.floor(timeDiff / (1000 * 60))
+		const diffInHours = Math.floor(timeDiff / (1000 * 60 * 60))
 
-		if (diffInHours <= 1) {
+		if (diffInHours <= 24) {
 			return
 		} else {
 			const res = await fetch(baseUrl + '/ticket/open', {
@@ -76,4 +76,4 @@ async function checkStatus() {
 	}
 }
 
-setInterval(() => checkStatus(), 1000 * 10) // exec every 4h
+setInterval(() => checkStatus(), 1000 * 60 * 60 * 4) // exec every 4h
