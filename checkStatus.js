@@ -33,37 +33,47 @@ async function checkStatus() {
 
 	const now = new Date()
 
+	const date = new Date()
+	const formattedDate = date.getDate().toString().padStart(2, '0')
+	const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0')
+	const formatted = `${formattedDate}/${formattedMonth}/${date.getFullYear()}`
+
+	const verify = []
+
 	data.forEach(async (el) => {
 		const timeProgress = new Date(el.progress)
 		const timeDiff = now.getTime() - timeProgress.getTime()
-		const diffInHours = Math.floor(timeDiff / (1000 * 60 * 60))
+		const diffInHours = Math.floor(timeDiff / (1000 * 60))
 
-		if (diffInHours <= 24) return
+		if (diffInHours <= 1) {
+			return
+		} else {
+			const res = await fetch(baseUrl + '/ticket/open', {
+				headers: {
+					authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json',
+				},
+				method: 'PUT',
+				body: JSON.stringify({
+					id: el.id,
+				}),
+			})
 
-		const res = await fetch(baseUrl + '/ticket/open', {
-			headers: {
-				authorization: `Bearer ${token}`,
-				'Content-Type': 'application/json',
-			},
-			method: 'PUT',
-			body: JSON.stringify({
-				id: el.id,
-			}),
-		})
+			const data = await res.json()
 
-		const data = await res.json()
+			console.log(data)
 
-		console.log(data)
-
-		const date = new Date()
-		const formattedDate = date.getDate().toString().padStart(2, '0')
-		const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0')
-		const formatted = `${formattedDate}/${formattedMonth}/${date.getFullYear()}`
-
-		exec(
-			`echo '**Ticket time for finish expired** \n${formatted} \nTicket reopen: \nId: ${data.id} \nClient: ${data.clientName} \nDescrição: ${data.description} \n' >> status.log`
-		)
+			exec(
+				`echo '**Ticket time for finish expired** \n${formatted} \nTicket reopen: \nId: ${data.id} \nClient: ${data.clientName} \nDescrição: ${data.description} \n' >> status.log`
+			)
+			verify.push(el)
+		}
 	})
+
+	if (verify.length === 0) {
+		exec(`echo '**Nothing to do Tickets** \n${formatted} \n' >> status.log`)
+		verify.splice(0, -1)
+	}
 }
 
-setTimeout(() => checkStatus(), 1000 * 60 * 60 * 4) // exec every 4h
+setInterval(() => checkStatus(), 1000 * 10) // exec every 4h
