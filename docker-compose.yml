@@ -10,3 +10,10 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
     restart: always
+
+  last-actions-mongodb:
+    image: mongo
+    container_name: last-actions-database
+    ports:
+      - 27017:27017
+    restart: always
