@@ -22,7 +22,7 @@ const token = sign(
 	SECRET
 )
 
-async function checkStatus() {
+export async function checkStatus() {
 	const res = await fetch(baseUrl + '/ticket/listProgress/all', {
 		headers: {
 			authorization: `Bearer ${token}`,
@@ -71,9 +71,9 @@ async function checkStatus() {
 	})
 
 	if (verify.length === 0) {
-		exec(`echo '**Nothing to do Tickets** \n${formatted} \n' >> status.log`)
 		verify.splice(0, -1)
+		return
 	}
 }
 
-setInterval(() => checkStatus(), 1000 * 60 * 60 * 4) // exec every 4h
+setInterval(() => checkStatus(), 1000 * 60 * 60 * 6) // exec every 6h

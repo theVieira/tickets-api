@@ -3,8 +3,8 @@ import { ITicketRepository } from '../../../entities/ticket/ITicketRepository'
 import { Ticket } from '../../../entities/ticket/Ticket'
 import { TechRepository } from '../../../repositories/tech/TechRepository'
 import { IPayload } from '../../../services/jwt/IPayload'
-
-const SECRET = process.env.SECRET_KEY ?? ''
+import { SECRET_KEY } from '../../../utils/env'
+import redisClient from '../../../lib/cache/redis'
 
 export class SetFinishedUseCase {
 	constructor(private ticketRepository: ITicketRepository) {}
@@ -15,7 +15,7 @@ export class SetFinishedUseCase {
 		token: string,
 		report: string
 	): Promise<Ticket> {
-		verify(token, SECRET) as IPayload
+		verify(token, SECRET_KEY) as IPayload
 		const techRepository = new TechRepository()
 		const tech = await techRepository.findByName(techName)
 
@@ -24,6 +24,10 @@ export class SetFinishedUseCase {
 		}
 
 		const find: Ticket = await this.ticketRepository.findById(id)
+
+		await redisClient.del('ticket:open')
+		await redisClient.del('ticket:progress')
+		await redisClient.del('ticket:finish')
 
 		if (find.report) {
 			const dateFormat = `${new Date().getUTCDate()}/${(new Date().getUTCMonth() + 1)

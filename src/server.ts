@@ -5,17 +5,10 @@ import { router } from './router'
 import morgan from 'morgan'
 import { createWriteStream } from 'node:fs'
 import path from 'node:path'
-import mongoose from 'mongoose'
+import { PORT } from './utils/env'
+import { checkStatus } from './workers/checkStatus'
 
 config()
-const PORT = process.env.PORT
-
-const MONGODB_URL = process.env.MONGODB_URL ?? ''
-
-mongoose
-	.connect(MONGODB_URL)
-	.then(() => console.log('Mongodb Connected'))
-	.catch((err) => console.error('Mongodb Connection Error: ' + err))
 
 const app = express()
 
@@ -38,3 +31,5 @@ app.use(express.json())
 app.use(router)
 
 app.listen(PORT, () => console.log(`server running ${PORT}`))
+
+setInterval(() => checkStatus(), 1000 * 60 * 60 * 6)

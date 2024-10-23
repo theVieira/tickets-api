@@ -8,6 +8,7 @@ import { MapTicketPriority } from '../../../services/utils/MapTicketPriority'
 import { Telegraf } from 'telegraf'
 import { MapTicketCategory } from '../../../services/utils/MapTicketCategory'
 import { Translate } from '../../../services/utils/Translate'
+import redisClient from '../../../lib/cache/redis'
 
 config()
 const SECRET = process.env.SECRET_KEY ?? ''
@@ -42,6 +43,10 @@ export class CreateTicketUseCase {
 		})
 
 		const created = await this.ticketRepository.create(ticket)
+
+		await redisClient.del('ticket:finish')
+		await redisClient.del('ticket:open')
+		await redisClient.del('ticket:progress')
 
 		await bot.telegram.sendMessage(
 			CHAT_ID,
