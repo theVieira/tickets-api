@@ -24,6 +24,7 @@ export class ListFinishedUseCase {
 
 		if (!cache) {
 			allTickets = await this.ticketRepository.list()
+			allTickets = allTickets.reverse()
 			await redisClient.set(key, JSON.stringify(allTickets), { EX: 600 })
 		} else {
 			allTickets = JSON.parse(cache)
