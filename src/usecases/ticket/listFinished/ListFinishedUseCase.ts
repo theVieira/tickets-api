@@ -2,11 +2,10 @@ import { verify } from 'jsonwebtoken'
 import { ITicketRepository } from '../../../entities/ticket/ITicketRepository'
 import { IPayload } from '../../../services/jwt/IPayload'
 import { Ticket } from '../../../entities/ticket/Ticket'
-import { TicketStatus } from '../../../entities/ticket/TicketProps'
+import { TicketCategory, TicketStatus } from '../../../entities/ticket/TicketProps'
 import { OrderType } from '../../../types/OrderType'
 import redisClient from '../../../lib/cache/redis'
 import { SECRET_KEY } from '../../../utils/env'
-import { orderTickets } from '../../../services/utils/OrderTickets'
 
 export class ListFinishedUseCase {
 	constructor(private ticketRepository: ITicketRepository) {}
@@ -23,8 +22,7 @@ export class ListFinishedUseCase {
 		let allTickets: Ticket[] = []
 
 		if (!cache) {
-			allTickets = await this.ticketRepository.list()
-			allTickets = allTickets.reverse()
+			allTickets = (await this.ticketRepository.list()).reverse()
 			await redisClient.set(key, JSON.stringify(allTickets), { EX: 600 })
 		} else {
 			allTickets = JSON.parse(cache)
@@ -34,6 +32,28 @@ export class ListFinishedUseCase {
 			(ticket) => ticket.status === TicketStatus.finished
 		)
 
-		return orderTickets(finishedTickets, order)
+		switch (order) {
+			case OrderType.all: {
+				return finishedTickets
+			}
+			case OrderType.daily: {
+				const dailys = finishedTickets.filter(
+					(ticket) => ticket.category == TicketCategory.daily
+				)
+				return dailys
+			}
+			case OrderType.delivery: {
+				const deliverys = finishedTickets.filter(
+					(ticket) => ticket.category == TicketCategory.delivery
+				)
+				return deliverys
+			}
+			case OrderType.budget: {
+				const budgets = finishedTickets.filter(
+					(ticket) => ticket.category == TicketCategory.budget
+				)
+				return budgets
+			}
+		}
 	}
 }
