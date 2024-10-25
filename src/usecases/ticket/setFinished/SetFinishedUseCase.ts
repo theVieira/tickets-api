@@ -23,35 +23,18 @@ export class SetFinishedUseCase {
 			throw new Error('report must be passed')
 		}
 
+		if (report.length > 500) throw new Error('report over char limit max(500)')
+
 		const find: Ticket = await this.ticketRepository.findById(id)
+
+		if (!find) throw new Error('ticket not found!')
 
 		await redisClient.del('ticket:open')
 		await redisClient.del('ticket:progress')
 		await redisClient.del('ticket:finish')
 
-		if (find.report) {
-			const dateFormat = `${new Date().getUTCDate()}/${(new Date().getUTCMonth() + 1)
-				.toString()
-				.padStart(2, '0')}/${new Date().getUTCFullYear()} ${
-				new Date().getUTCHours() - 4
-			}:${new Date().getUTCMinutes()}`
-
-			const msg = `${
-				find.report
-			}\n${techName.toUpperCase()}\n${dateFormat}\n${report}`
-
-			const ticket = await this.ticketRepository.setFinished(
-				id,
-				tech,
-				msg,
-				new Date()
-			)
-
-			return ticket
-		}
-
 		const ticket = await this.ticketRepository.setFinished(
-			id,
+			find.id,
 			tech,
 			report,
 			new Date()
