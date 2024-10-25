@@ -16,3 +16,4 @@ services:
     container_name: ticket-cache
     ports:
       - 6379:6379
+    restart: always

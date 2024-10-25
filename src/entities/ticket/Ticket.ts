@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import {
 	TicketCategory,
+	TicketNote,
 	TicketPriority,
 	TicketProps,
 	TicketStatus,
@@ -20,7 +21,7 @@ export class Ticket {
 	report?: string
 	progress?: Date
 	finished?: Date
-	note?: string
+	note?: TicketNote[]
 
 	constructor(
 		props: TicketProps,
@@ -33,7 +34,7 @@ export class Ticket {
 		progress?: Date,
 		finished?: Date,
 		report?: string,
-		note?: string
+		note?: TicketNote[]
 	) {
 		/* Optionals */
 		this.id = uuid()
@@ -80,17 +81,17 @@ export class Ticket {
 		this.category = props.category
 		this.description = props.description
 		this.priority = props.priority
-		this.clientName = this.formatName(props.clientName)
+		this.clientName = formatName(props.clientName)
 	}
+}
 
-	formatName(name: string): string {
-		const names = name.toLowerCase().split(' ')
+function formatName(name: string): string {
+	const names = name.toLowerCase().split(' ')
 
-		const formatNames = names.map((name) => {
-			return name.charAt(0).toUpperCase() + name.substring(1)
-		})
+	const formatNames = names.map((name) => {
+		return name.charAt(0).toUpperCase() + name.substring(1)
+	})
 
-		const formattedName = formatNames.join(' ')
-		return formattedName
-	}
+	const formattedName = formatNames.join(' ')
+	return formattedName
 }

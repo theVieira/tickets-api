@@ -1,7 +1,11 @@
 import { Tech } from '../../entities/tech/Tech'
 import { ITicketRepository } from '../../entities/ticket/ITicketRepository'
 import { Ticket } from '../../entities/ticket/Ticket'
-import { TicketCategory, TicketStatus } from '../../entities/ticket/TicketProps'
+import {
+	TicketCategory,
+	TicketNote,
+	TicketStatus,
+} from '../../entities/ticket/TicketProps'
 import { ticket_gateway } from '../../services/database/prisma'
 import { MapTicketCategory } from '../../services/utils/MapTicketCategory'
 import { MapTicketPriority } from '../../services/utils/MapTicketPriority'
@@ -44,6 +48,10 @@ export class TicketRepository implements ITicketRepository {
 			include: {
 				client: true,
 				tech: true,
+				note: {
+					include: { tech: true },
+					orderBy: { time: 'desc' },
+				},
 			},
 			orderBy: {
 				createdAt: 'asc',
@@ -51,6 +59,17 @@ export class TicketRepository implements ITicketRepository {
 		})
 
 		return data.map((ticket) => {
+			const note: TicketNote[] = ticket.note.map(
+				(note): TicketNote => ({
+					id: note.id,
+					note: note.note,
+					techId: note.techId,
+					time: note.time,
+					ticketId: note.ticketId,
+					techName: note.tech.name,
+				})
+			)
+
 			return new Ticket(
 				{
 					clientName: ticket.clientName,
@@ -67,7 +86,7 @@ export class TicketRepository implements ITicketRepository {
 				ticket.progress ?? undefined,
 				ticket.finished ?? undefined,
 				ticket.report ?? undefined,
-				ticket.note ?? undefined
+				note
 			)
 		})
 	}
@@ -91,6 +110,7 @@ export class TicketRepository implements ITicketRepository {
 			include: {
 				client: true,
 				tech: true,
+				note: true,
 			},
 		})
 
@@ -109,8 +129,7 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined,
-			data.note ?? undefined
+			data.report ?? undefined
 		)
 	}
 
@@ -127,6 +146,7 @@ export class TicketRepository implements ITicketRepository {
 			include: {
 				client: true,
 				tech: true,
+				note: true,
 			},
 		})
 
@@ -145,8 +165,7 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined,
-			data.note ?? undefined
+			data.report ?? undefined
 		)
 	}
 
@@ -164,6 +183,7 @@ export class TicketRepository implements ITicketRepository {
 			include: {
 				client: true,
 				tech: true,
+				note: true,
 			},
 		})
 
@@ -182,8 +202,7 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined,
-			data.note ?? undefined
+			data.report ?? undefined
 		)
 	}
 
@@ -195,6 +214,7 @@ export class TicketRepository implements ITicketRepository {
 			include: {
 				client: true,
 				tech: true,
+				note: true,
 			},
 		})
 
@@ -214,8 +234,7 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined,
-			data.note ?? undefined
+			data.report ?? undefined
 		)
 	}
 
@@ -261,6 +280,7 @@ export class TicketRepository implements ITicketRepository {
 			include: {
 				client: true,
 				tech: true,
+				note: true,
 			},
 		})
 
@@ -279,42 +299,7 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined,
-			data.note ?? undefined
-		)
-	}
-
-	async addNote(id: string, note: string): Promise<Ticket> {
-		const data = await ticket_gateway.update({
-			where: {
-				id,
-			},
-			data: {
-				note,
-			},
-			include: {
-				client: true,
-				tech: true,
-			},
-		})
-
-		return new Ticket(
-			{
-				category: MapTicketCategory(data.category),
-				clientName: data.clientName,
-				description: data.description,
-				priority: MapTicketPriority(data.priority),
-			},
-			data.id,
-			MapTicketStatus(data.status),
-			data.reccurrent,
-			data.tech?.name,
-			data.createdAt,
-			data.tech?.color,
-			data.progress ?? undefined,
-			data.finished ?? undefined,
-			data.report ?? undefined,
-			data.note ?? undefined
+			data.report ?? undefined
 		)
 	}
 
@@ -331,6 +316,7 @@ export class TicketRepository implements ITicketRepository {
 			include: {
 				tech: true,
 				client: true,
+				note: true,
 			},
 		})
 
@@ -349,8 +335,7 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress || undefined,
 			data.finished || undefined,
-			data.report || undefined,
-			data.note || undefined
+			data.report || undefined
 		)
 	}
 }

@@ -14,35 +14,44 @@ datasource db {
 }
 
 model Client {
-  id          String      @unique
-  name        String      @unique
-  tickets     Ticket[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id        String   @unique
+  name      String   @unique
+  tickets   Ticket[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Ticket {
-  id          String          @unique
+  id          String         @unique
   reccurrent  Boolean
   description String
   status      TicketStatus
   priority    TicketPriority
   category    TicketCategory
   clientName  String
-  client      Client          @relation(fields: [clientName], references: [name])
-  techName    String? 
-  tech        Tech?           @relation(fields: [techName], references: [name])
-  createdAt   DateTime        @default(now())
+  client      Client         @relation(fields: [clientName], references: [name])
+  techName    String?
+  tech        Tech?          @relation(fields: [techName], references: [name])
+  createdAt   DateTime       @default(now())
   progress    DateTime?
   finished    DateTime?
   report      String?
-  note        String?
+  note        TicketNote[]
+}
 
+model TicketNote {
+  id       String @unique
+  note     String
+  techId   String 
+  tech     Tech   @relation(fields: [techId], references: [id])
+  ticketId String 
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+  time DateTime
 }
 
 model Tech {
-  id            String    @unique
-  name          String    @unique
+  id            String       @unique
+  name          String       @unique
   password      String
   phone         String
   admin         Boolean
@@ -51,8 +60,9 @@ model Tech {
   color         String
   status        TechStatus
   tickets       Ticket[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  note          TicketNote[] 
 }
 
 enum TicketStatus {
