@@ -2,6 +2,7 @@ import { verify } from 'jsonwebtoken'
 import { ITicketRepository } from '../../../entities/ticket/ITicketRepository'
 import { SECRET_KEY } from '../../../utils/env'
 import redisClient from '../../../lib/cache/redis'
+import dayjs from 'dayjs'
 
 export class AddNoteUseCase {
 	constructor(private ticketRepository: ITicketRepository) {}
@@ -13,13 +14,12 @@ export class AddNoteUseCase {
 			throw new Error('char limit over (max 500)')
 		}
 
-		const dateFormat = `${new Date().getUTCDate()}/${(new Date().getUTCMonth() + 1)
-			.toString()
-			.padStart(2, '0')}/${new Date().getUTCFullYear()} ${
-			new Date().getUTCHours() - 4
-		}:${new Date().getUTCMinutes()}`
+		const dateFormat = dayjs(new Date()).format('DD/MM/YYYY HH:mm')
 
-		const formatNote = `\n🧑 ${techName}\n⏰ ${dateFormat}\n💬 ${note}\n`
+		const formattedTechName: string =
+			techName.charAt(0).toUpperCase() + techName.substring(1)
+
+		const formatNote = `\n🧑 ${formattedTechName}\n⏰ ${dateFormat}\n💬 ${note}\n`
 
 		const find = await this.ticketRepository.findById(id)
 
