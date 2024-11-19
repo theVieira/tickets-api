@@ -15,21 +15,18 @@ export class ListOpenUseCase {
 
 		const key: string = 'ticket:open'
 
-		let allTickets: Ticket[] = []
+		const cache: string | null = await redisClient.get(key)
 
-		const cache = await redisClient.get(key)
-
-		if (!cache) {
-			allTickets = await this.ticketRepository.list()
-			await redisClient.set(key, JSON.stringify(allTickets))
+		if (cache) {
+			const parsed: Ticket[] = JSON.parse(cache)
+			return orderTickets(parsed, order)
 		} else {
-			allTickets = JSON.parse(cache)
+			const tickets: Ticket[] = await (
+				await this.ticketRepository.list()
+			).filter((ticket) => ticket.status != TicketStatus.finished)
+
+			redisClient.set(key, JSON.stringify(tickets))
+			return orderTickets(tickets, order)
 		}
-
-		const openTickets: Ticket[] = allTickets.filter((ticket) => {
-			if (ticket.status !== TicketStatus.finished) return ticket
-		})
-
-		return orderTickets(openTickets, order)
 	}
 }
