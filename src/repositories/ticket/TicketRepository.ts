@@ -54,7 +54,7 @@ export class TicketRepository implements ITicketRepository {
 				},
 			},
 			orderBy: {
-				createdAt: 'asc',
+				createdAt: 'desc',
 			},
 		})
 
