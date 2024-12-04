@@ -36,17 +36,7 @@ model Ticket {
   progress    DateTime?
   finished    DateTime?
   report      String?
-  note        TicketNote[]
-}
-
-model TicketNote {
-  id       String @unique
-  note     String
-  techId   String 
-  tech     Tech   @relation(fields: [techId], references: [id])
-  ticketId String 
-  ticket   Ticket @relation(fields: [ticketId], references: [id])
-  time DateTime
+  note        String?
 }
 
 model Tech {
@@ -62,7 +52,6 @@ model Tech {
   tickets       Ticket[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  note          TicketNote[] 
 }
 
 enum TicketStatus {
@@ -82,6 +71,7 @@ enum TicketCategory {
   daily
   delivery
   budget
+  maintenance
 }
 
 enum TechStatus {

@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid'
 import {
 	TicketCategory,
-	TicketNote,
 	TicketPriority,
 	TicketProps,
 	TicketStatus,
@@ -21,7 +20,7 @@ export class Ticket {
 	report?: string
 	progress?: Date
 	finished?: Date
-	note?: TicketNote[]
+	note?: string
 
 	constructor(
 		props: TicketProps,
@@ -34,7 +33,7 @@ export class Ticket {
 		progress?: Date,
 		finished?: Date,
 		report?: string,
-		note?: TicketNote[]
+		note?: string
 	) {
 		/* Optionals */
 		this.id = uuid()

@@ -5,7 +5,6 @@ import { setProgressController } from '../usecases/ticket/setProgress'
 import { reOpenTicketController } from '../usecases/ticket/reopen'
 import { deleteTicketController } from '../usecases/ticket/delete'
 import { editDescriptionController } from '../usecases/ticket/edit'
-import { addNoteController } from '../usecases/ticket/addNote'
 import { openTicketController } from '../usecases/ticket/open'
 import { listOpenController } from '../usecases/ticket/listOpen'
 import { listProgressController } from '../usecases/ticket/listProgress'
@@ -43,10 +42,6 @@ ticketRoutes.put('/progress', (req: Request, res: Response) => {
 
 ticketRoutes.put('/reopen', (req: Request, res: Response) => {
 	reOpenTicketController.handle(req, res)
-})
-
-ticketRoutes.put('/addNote', (req: Request, res: Response) => {
-	addNoteController.handle(req, res)
 })
 
 ticketRoutes.put('/open', (req: Request, res: Response) => {

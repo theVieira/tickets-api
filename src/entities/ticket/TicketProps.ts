@@ -31,4 +31,5 @@ export enum TicketCategory {
 	daily = 'daily',
 	delivery = 'delivery',
 	budget = 'budget',
+	maintenance = 'maintenance',
 }
