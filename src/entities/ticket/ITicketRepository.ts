@@ -19,4 +19,5 @@ export interface ITicketRepository {
 		techName?: string | null
 	): Promise<Ticket>
 	open(id: string): Promise<Ticket>
+	addNote(id: string, note: string): Promise<Ticket>
 }

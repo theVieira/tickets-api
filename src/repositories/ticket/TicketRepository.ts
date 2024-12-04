@@ -279,6 +279,40 @@ export class TicketRepository implements ITicketRepository {
 		)
 	}
 
+	async addNote(id: string, note: string): Promise<Ticket> {
+		const data = await ticket_gateway.update({
+			where: {
+				id,
+			},
+			data: {
+				note,
+			},
+			include: {
+				client: true,
+				tech: true,
+			},
+		})
+
+		return new Ticket(
+			{
+				category: MapTicketCategory(data.category),
+				clientName: data.clientName,
+				description: data.description,
+				priority: MapTicketPriority(data.priority),
+			},
+			data.id,
+			MapTicketStatus(data.status),
+			data.reccurrent,
+			data.tech?.name,
+			data.createdAt,
+			data.tech?.color,
+			data.progress ?? undefined,
+			data.finished ?? undefined,
+			data.report ?? undefined,
+			data.note ?? undefined
+		)
+	}
+
 	async open(id: string): Promise<Ticket> {
 		const data = await ticket_gateway.update({
 			where: {

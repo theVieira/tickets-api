@@ -9,6 +9,7 @@ import { openTicketController } from '../usecases/ticket/open'
 import { listOpenController } from '../usecases/ticket/listOpen'
 import { listProgressController } from '../usecases/ticket/listProgress'
 import { listFinishedController } from '../usecases/ticket/listFinished'
+import { addNoteController } from '../usecases/ticket/addNote'
 
 const ticketRoutes = Router()
 
@@ -50,6 +51,10 @@ ticketRoutes.put('/open', (req: Request, res: Response) => {
 
 ticketRoutes.delete('/delete', (req: Request, res: Response) => {
 	deleteTicketController.handle(req, res)
+})
+
+ticketRoutes.put('/addNote', (req: Request, res: Response) => {
+	addNoteController.handle(req, res)
 })
 
 export { ticketRoutes }
