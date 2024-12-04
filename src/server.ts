@@ -14,7 +14,7 @@ const app = express()
 
 const customLogFormat =
 	':date[web] :remote-addr :method :url :status :res[content-length] - :response-time ms'
-const logStream = createWriteStream(path.join(__dirname, '../access.log'), {
+const logStream = createWriteStream(path.join(__dirname, '../logs/access.log'), {
 	flags: 'a',
 })
 

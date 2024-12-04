@@ -22,7 +22,7 @@ export class CreateTicketUseCase {
 		description: string,
 		priority: 'urgent' | 'high' | 'medium' | 'low',
 		clientName: string,
-		category: 'daily' | 'budget' | 'delivery',
+		category: 'daily' | 'budget' | 'delivery' | 'maintenance',
 		token: string
 	): Promise<Ticket> {
 		const bot = new Telegraf(BOT_TOKEN)

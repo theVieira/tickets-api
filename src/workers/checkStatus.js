@@ -2,6 +2,7 @@
 const { exec } = require('child_process')
 const { config } = require('dotenv')
 const { sign } = require('jsonwebtoken')
+const { resolve } = require('node:path')
 
 config()
 
@@ -63,8 +64,10 @@ export async function checkStatus() {
 
 			console.log(data)
 
+			const path = resolve(__dirname, '..', '..', 'logs', 'status.log')
+
 			exec(
-				`echo '**Ticket time for finish expired** \n${formatted} \nTicket reopen: \nId: ${data.id} \nClient: ${data.clientName} \nDescrição: ${data.description} \n' >> status.log`
+				`echo '**Ticket time for finish expired** \n${formatted} \nTicket reopen: \nId: ${data.id} \nClient: ${data.clientName} \nDescrição: ${data.description} \n' >> ${path}`
 			)
 			verify.push(el)
 		}
