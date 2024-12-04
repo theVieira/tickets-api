@@ -35,7 +35,8 @@ export class TicketRepository implements ITicketRepository {
 			MapTicketStatus(data.status),
 			data.reccurrent,
 			data.techName ?? undefined,
-			data.createdAt
+			data.createdAt,
+			data.note ?? undefined
 		)
 	}
 
@@ -109,7 +110,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -144,7 +146,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -180,7 +183,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -211,7 +215,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -233,7 +238,8 @@ export class TicketRepository implements ITicketRepository {
 			MapTicketStatus(data.status),
 			data.reccurrent,
 			data.techName ?? undefined,
-			data.createdAt
+			data.createdAt,
+			data.note ?? undefined
 		)
 	}
 
@@ -275,7 +281,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -344,7 +351,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress || undefined,
 			data.finished || undefined,
-			data.report || undefined
+			data.report || undefined,
+			data.note ?? undefined
 		)
 	}
 }
