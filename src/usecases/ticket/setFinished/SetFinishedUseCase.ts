@@ -5,6 +5,7 @@ import { TechRepository } from '../../../repositories/tech/TechRepository'
 import { IPayload } from '../../../services/jwt/IPayload'
 import { SECRET_KEY } from '../../../utils/env'
 import redisClient from '../../../lib/cache/redis'
+import dayjs from 'dayjs'
 
 export class SetFinishedUseCase {
 	constructor(private ticketRepository: ITicketRepository) {}
@@ -33,12 +34,30 @@ export class SetFinishedUseCase {
 		await redisClient.del('ticket:progress')
 		await redisClient.del('ticket:finish')
 
-		const ticket = await this.ticketRepository.setFinished(
-			find.id,
-			tech,
-			report,
-			new Date()
-		)
-		return ticket
+		const dateFormat = dayjs(new Date()).format('DD/MM/YYYY HH:mm')
+		const formattedTechName: string =
+			techName.charAt(0).toUpperCase() + techName.substring(1)
+
+		const formatReport = `\n🧑 ${formattedTechName}\n⏰ ${dateFormat}\n💬 ${report}\n`
+
+		if (find.report == undefined) {
+			const ticket = await this.ticketRepository.setFinished(
+				find.id,
+				tech,
+				formatReport,
+				new Date()
+			)
+
+			return ticket
+		} else {
+			const ticket = await this.ticketRepository.setFinished(
+				find.id,
+				tech,
+				`${find.report}${formatReport}`,
+				new Date()
+			)
+
+			return ticket
+		}
 	}
 }

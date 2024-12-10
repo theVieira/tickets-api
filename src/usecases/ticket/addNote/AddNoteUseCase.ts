@@ -20,6 +20,7 @@ export class AddNoteUseCase {
 		await redisClient.del('ticket:finish')
 		await redisClient.del('ticket:open')
 		await redisClient.del('ticket:progress')
+
 		if (find.note == undefined) {
 			const ticket = await this.ticketRepository.addNote(id, formatNote)
 			return ticket

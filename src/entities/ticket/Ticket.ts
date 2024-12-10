@@ -14,6 +14,7 @@ export class Ticket {
 	priority: TicketPriority
 	category: TicketCategory
 	clientName: string
+	createdBy: string
 	techName?: string
 	createdAt?: Date
 	techColor?: string
@@ -77,6 +78,7 @@ export class Ticket {
 			throw new Error('char over limit')
 		}
 
+		this.createdBy = formatName(props.createdBy)
 		this.category = props.category
 		this.description = props.description
 		this.priority = props.priority

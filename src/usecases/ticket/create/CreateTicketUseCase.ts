@@ -23,6 +23,7 @@ export class CreateTicketUseCase {
 		priority: 'urgent' | 'high' | 'medium' | 'low',
 		clientName: string,
 		category: 'daily' | 'budget' | 'delivery' | 'maintenance',
+		createdBy: string,
 		token: string
 	): Promise<Ticket> {
 		const bot = new Telegraf(BOT_TOKEN)
@@ -40,6 +41,7 @@ export class CreateTicketUseCase {
 			priority: MapTicketPriority(priority),
 			category: MapTicketCategory(category),
 			description,
+			createdBy,
 		})
 
 		const created = await this.ticketRepository.create(ticket)
