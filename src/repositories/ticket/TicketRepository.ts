@@ -18,6 +18,7 @@ export class TicketRepository implements ITicketRepository {
 				reccurrent: ticket.reccurrent,
 				status: ticket.status,
 				clientName: ticket.clientName,
+				createdBy: ticket.createdBy,
 			},
 			include: {
 				client: true,
@@ -30,12 +31,14 @@ export class TicketRepository implements ITicketRepository {
 				description: data.description,
 				priority: MapTicketPriority(data.priority),
 				category: MapTicketCategory(data.category),
+				createdBy: data.createdBy,
 			},
 			data.id,
 			MapTicketStatus(data.status),
 			data.reccurrent,
 			data.techName ?? undefined,
-			data.createdAt
+			data.createdAt,
+			data.note ?? undefined
 		)
 	}
 
@@ -57,6 +60,7 @@ export class TicketRepository implements ITicketRepository {
 					description: ticket.description,
 					category: MapTicketCategory(ticket.category),
 					priority: MapTicketPriority(ticket.priority),
+					createdBy: ticket.createdBy,
 				},
 				ticket.id,
 				MapTicketStatus(ticket.status),
@@ -100,6 +104,7 @@ export class TicketRepository implements ITicketRepository {
 				description: data.description,
 				priority: MapTicketPriority(data.priority),
 				category: MapTicketCategory(data.category),
+				createdBy: data.createdBy,
 			},
 			data.id,
 			MapTicketStatus(data.status),
@@ -109,7 +114,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -135,6 +141,7 @@ export class TicketRepository implements ITicketRepository {
 				description: data.description,
 				priority: MapTicketPriority(data.priority),
 				category: MapTicketCategory(data.category),
+				createdBy: data.createdBy,
 			},
 			data.id,
 			MapTicketStatus(data.status),
@@ -144,7 +151,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -171,6 +179,7 @@ export class TicketRepository implements ITicketRepository {
 				description: data.description,
 				priority: MapTicketPriority(data.priority),
 				category: MapTicketCategory(data.category),
+				createdBy: data.createdBy,
 			},
 			data.id,
 			MapTicketStatus(data.status),
@@ -180,7 +189,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -202,6 +212,7 @@ export class TicketRepository implements ITicketRepository {
 				description: data.description,
 				priority: MapTicketPriority(data.priority),
 				category: MapTicketCategory(data.category),
+				createdBy: data.createdBy,
 			},
 			data.id,
 			MapTicketStatus(data.status),
@@ -211,7 +222,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -228,12 +240,14 @@ export class TicketRepository implements ITicketRepository {
 				description: data.description,
 				priority: MapTicketPriority(data.priority),
 				category: MapTicketCategory(data.category),
+				createdBy: data.createdBy,
 			},
 			data.id,
 			MapTicketStatus(data.status),
 			data.reccurrent,
 			data.techName ?? undefined,
-			data.createdAt
+			data.createdAt,
+			data.note ?? undefined
 		)
 	}
 
@@ -266,6 +280,7 @@ export class TicketRepository implements ITicketRepository {
 				clientName: data.client.name,
 				description: data.description,
 				priority: MapTicketPriority(data.priority),
+				createdBy: data.createdBy,
 			},
 			data.id,
 			MapTicketStatus(data.status),
@@ -275,7 +290,43 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress ?? undefined,
 			data.finished ?? undefined,
-			data.report ?? undefined
+			data.report ?? undefined,
+			data.note ?? undefined
+		)
+	}
+
+	async addNote(id: string, note: string): Promise<Ticket> {
+		const data = await ticket_gateway.update({
+			where: {
+				id,
+			},
+			data: {
+				note,
+			},
+			include: {
+				client: true,
+				tech: true,
+			},
+		})
+
+		return new Ticket(
+			{
+				category: MapTicketCategory(data.category),
+				clientName: data.clientName,
+				description: data.description,
+				priority: MapTicketPriority(data.priority),
+				createdBy: data.createdBy,
+			},
+			data.id,
+			MapTicketStatus(data.status),
+			data.reccurrent,
+			data.tech?.name,
+			data.createdAt,
+			data.tech?.color,
+			data.progress ?? undefined,
+			data.finished ?? undefined,
+			data.report ?? undefined,
+			data.note ?? undefined
 		)
 	}
 
@@ -301,6 +352,7 @@ export class TicketRepository implements ITicketRepository {
 				clientName: data.clientName,
 				description: data.description,
 				priority: MapTicketPriority(data.priority),
+				createdBy: data.createdBy,
 			},
 			data.id,
 			MapTicketStatus(data.status),
@@ -310,7 +362,8 @@ export class TicketRepository implements ITicketRepository {
 			data.tech?.color,
 			data.progress || undefined,
 			data.finished || undefined,
-			data.report || undefined
+			data.report || undefined,
+			data.note ?? undefined
 		)
 	}
 }

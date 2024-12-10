@@ -37,6 +37,7 @@ model Ticket {
   finished    DateTime?
   report      String?
   note        String?
+  createdBy   String         @default("")
 }
 
 model Tech {

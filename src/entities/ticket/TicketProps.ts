@@ -3,6 +3,7 @@ export type TicketProps = {
 	priority: TicketPriority
 	category: TicketCategory
 	clientName: string
+	createdBy: string
 }
 
 export type TicketNote = {
